@@ -1,671 +1,585 @@
 import { useState } from "react";
 
-// ═══════════════════════════════════════════════════════════
-// 2025/2026 最新資料 — 基於官方網站查詢
-// ═══════════════════════════════════════════════════════════
 const cards = [
   {
-    id: "amex-plat",
+    id: "amex-platinum",
     name: "Amex Platinum",
-    shortName: "Platinum",
-    issuer: "American Express",
-    network: "Amex",
+    issuer: "AMERICAN EXPRESS · AMEX",
+    color: "#B8860B",
+    gradient: "linear-gradient(135deg, #B8860B, #FFD700, #B8860B)",
     annualFee: 895,
-    gradient: ["#b8941f", "#f0d060", "#b8941f"],
-    text: "#1a0e00",
-    rewardType: "MR Points",
-    multipliers: {
-      flights: 5,       // 直接向航空公司或 Amex Travel 訂購
-      hotels: 5,        // Amex Travel 預訂飯店
-      dining: 1,        // 一般消費 1x（需搭配 Gold Card）
-      grocery: 1,
-      rideshare: 1,
-      other: 1,
-    },
-    benefits: [
-      { icon: "✈️", cat: "PPS", label: "Priority Pass 無限次", detail: "含 2 位同行免費，全球 1,400+ 貴賓室" },
-      { icon: "🏛️", cat: "Lounge", label: "Amex Centurion Lounge", detail: "Amex 自有頂級貴賓室，品質最高" },
-      { icon: "🏨", cat: "Credit", label: "$600 飯店 Credit", detail: "Fine Hotels+Resorts 或 The Hotel Collection，每半年 $300" },
-      { icon: "🍽️", cat: "Credit", label: "$400 Resy 餐廳 Credit", detail: "每季 $100，全美 10,000+ Resy 餐廳" },
-      { icon: "🎬", cat: "Credit", label: "$300 數位娛樂 Credit", detail: "每月 $25：Disney+, YouTube Premium, Peacock 等" },
-      { icon: "🚗", cat: "Credit", label: "$200 Uber Cash", detail: "每月 $15 + 12月額外 $20" },
-      { icon: "🛡️", cat: "Credit", label: "$120 Uber One Credit", detail: "每年 $120 Uber One 會員費補貼" },
-      { icon: "✈️", cat: "Credit", label: "$200 航空附加費 Credit", detail: "每年指定一家航空的附加費（行李/座位）" },
-      { icon: "💪", cat: "Credit", label: "$300 Equinox Credit", detail: "健身房會員費補貼" },
-      { icon: "🔵", cat: "Credit", label: "$209 CLEAR+ Credit", detail: "機場安檢快速通道會員費" },
-      { icon: "🛒", cat: "Credit", label: "$155 Walmart+ Credit", detail: "每月 $12.95 Walmart+ 會費" },
-      { icon: "💍", cat: "Credit", label: "$200 Oura Ring Credit", detail: "智慧健康戒指購買補貼" },
-      { icon: "👗", cat: "Credit", label: "$300 Lululemon Credit", detail: "每季 $75，美國門市和官網" },
-      { icon: "🌐", cat: "Credit", label: "$100 Saks Credit", detail: "每半年 $50，Saks Fifth Avenue" },
-      { icon: "🛡️", cat: "Travel", label: "Global Entry/TSA $120", detail: "每 4.5 年補貼一次" },
-      { icon: "🏨", cat: "Status", label: "Hilton Gold + Marriott Gold", detail: "兩大飯店集團 Gold 身份" },
+    pointType: "MR Points",
+    earning: [
+      { cat: "機票（直飛 or Amex Travel）", rate: 5, note: "" },
+      { cat: "Amex Travel 訂飯店", rate: 5, note: "" },
+      { cat: "其他消費", rate: 1, note: "" },
     ],
-    bestFor: ["機票 5x", "Amex Lounge", "頂級 Credits 最多"],
-    note: "2025年9月大改版，年費漲至 $895，但 Credits 總額超過 $3,500",
+    highlights: ["機場貴賓室 5x", "Amex Lounge", "全球貴賓室"],
+    credits: [
+      { name: "$600 飯店 Credit", amt: 600, note: "每半年 $300，Fine Hotels & Resorts 或 Hotel Collection" },
+      { name: "$400 Resy 餐廳 Credit", amt: 400, note: "每季 $100，Resy 訂位餐廳" },
+      { name: "$300 娛樂 Credit", amt: 300, note: "Disney+、Hulu、ESPN+ 等流媒體" },
+      { name: "$200 航空雜費 Credit", amt: 200, note: "指定航空行李費/座位升級等" },
+      { name: "$200 飯店 Credit", amt: 200, note: "FHR 或 Hotel Collection 2 晚以上" },
+      { name: "$120 Uber Cash", amt: 120, note: "每月 $10 Uber / Uber Eats ✅ 台灣可用" },
+      { name: "$120 Uber One 會員", amt: 120, note: "Uber One 訂閱費 Credit" },
+      { name: "$300 Lululemon Credit", amt: 300, note: "全年 Lululemon 消費回饋" },
+      { name: "$200 Oura Ring Credit", amt: 200, note: "購買 Oura Ring 智慧戒指" },
+    ],
+    perks: [
+      "全球機場貴賓室（Amex Centurion + Priority Pass + Delta Sky Club）",
+      "Marriott Gold / Hilton Gold 身份",
+      "Global Entry / TSA PreCheck 費用 Credit",
+      "無外幣手續費",
+    ],
   },
   {
-    id: "amex-hilton",
+    id: "hilton-aspire",
     name: "Hilton Aspire",
-    shortName: "Aspire",
-    issuer: "American Express",
-    network: "Amex",
+    issuer: "AMERICAN EXPRESS · AMEX",
+    color: "#1a1a6e",
+    gradient: "linear-gradient(135deg, #1a1a6e, #2e2eb8, #1a1a6e)",
     annualFee: 550,
-    gradient: ["#1a3a6b", "#2756a8", "#0d1f3c"],
-    text: "#ffffff",
-    rewardType: "Hilton Points",
-    multipliers: {
-      flights: 7,       // 直接向航空公司訂購或 Amex Travel
-      hotels: 14,       // Hilton 飯店
-      dining: 7,        // 美國餐廳
-      grocery: 3,
-      rideshare: 3,
-      other: 3,
-    },
-    benefits: [
-      { icon: "💎", cat: "Status", label: "Hilton Diamond 身份", detail: "最高等級，自動升等、行政廊、免費早餐（部分品牌）" },
-      { icon: "🌙", cat: "FreeNight", label: "年度免費夜（無上限）", detail: "每年一張，可用於任何 Hilton 飯店，無點數上限" },
-      { icon: "✈️", cat: "PPS", label: "Priority Pass 無限次", detail: "含 2 位同行，全球機場貴賓室" },
-      { icon: "🏨", cat: "Credit", label: "$400 Hilton 渡假村 Credit", detail: "每半年 $200，指定 Hilton Resorts 消費" },
-      { icon: "✈️", cat: "Credit", label: "$200 航空 Credit", detail: "每季 $50，直接向航空公司購買" },
-      { icon: "🔵", cat: "Credit", label: "$209 CLEAR+ Credit", detail: "機場安檢快速通道" },
-      { icon: "🏨", cat: "Credit", label: "$100 Waldorf/Conrad Credit", detail: "訂 2 晚以上可享 $100 房內消費" },
+    pointType: "Hilton Points",
+    earning: [
+      { cat: "Hilton 飯店消費", rate: 14, note: "" },
+      { cat: "直飛 / Amex Travel 機票", rate: 7, note: "" },
+      { cat: "指定租車公司", rate: 7, note: "" },
+      { cat: "美國境內餐廳", rate: 7, note: "含外賣、外送" },
+      { cat: "其他消費", rate: 3, note: "" },
     ],
-    bestFor: ["Hilton 飯店 14x", "Diamond 身份", "無上限免費夜"],
-    note: "免費夜無點數上限是最大亮點，Diamond 身份含自動升等",
+    highlights: ["Hilton 14x", "Diamond 身份", "每年免費夜"],
+    credits: [
+      { name: "$400 Hilton 度假村 Credit", amt: 400, note: "每半年 $200，入住 Hilton 參與度假村" },
+      { name: "$200 航空 Credit", amt: 200, note: "每季 $50，直飛或 Amex Travel 購票" },
+      { name: "$209 CLEAR+ Credit", amt: 209, note: "CLEAR+ 會員費（美國機場快速安檢）" },
+    ],
+    perks: [
+      "自動 Hilton Diamond 頂級身份（含免費早餐/升等）",
+      "每年 1 張免費夜券（住滿 $30K 再送 1 張，$60K 再送 1 張）",
+      "Priority Pass 含 2 名同伴",
+      "$100 Waldorf/Conrad 住宿 Credit（訂 Aspire 專屬套房）",
+      "無外幣手續費",
+    ],
   },
   {
-    id: "amex-marriott",
+    id: "marriott-brilliant",
     name: "Marriott Brilliant",
-    shortName: "Brilliant",
-    issuer: "American Express",
-    network: "Amex",
+    issuer: "AMERICAN EXPRESS · AMEX",
+    color: "#8B0000",
+    gradient: "linear-gradient(135deg, #8B0000, #cc2200, #8B0000)",
     annualFee: 650,
-    gradient: ["#6b1a1a", "#a83232", "#4a0e0e"],
-    text: "#ffffff",
-    rewardType: "Bonvoy Points",
-    multipliers: {
-      flights: 3,       // 直接向航空公司訂購
-      hotels: 6,        // Marriott Bonvoy 飯店
-      dining: 3,        // 全球餐廳
-      grocery: 2,
-      rideshare: 2,
-      other: 2,
-    },
-    benefits: [
-      { icon: "🏅", cat: "Status", label: "Marriott Platinum Elite", detail: "含套房升等、4pm 晚退、行政廊、免費早餐（部分飯店）" },
-      { icon: "🌙", cat: "FreeNight", label: "年度免費夜（85K 以內）", detail: "每年一張，可用於 85,000 點以內的 Marriott 飯店" },
-      { icon: "✈️", cat: "PPS", label: "Priority Pass 無限次", detail: "含同行，全球 1,200+ 機場貴賓室" },
-      { icon: "🍽️", cat: "Credit", label: "$300 全球餐廳 Credit", detail: "每月 $25，全球所有餐廳消費" },
-      { icon: "🏨", cat: "Credit", label: "$100 飯店住宿 Credit", detail: "訂 Marriott/Ritz/St.Regis 特定房型可享 $100 消費" },
-      { icon: "⭐", cat: "Status", label: "25 Elite 夜點數", detail: "每年自動獲得 25 夜 Elite Credits，衝 Titanium 用" },
+    pointType: "Bonvoy Points",
+    earning: [
+      { cat: "Marriott 飯店消費", rate: 6, note: "" },
+      { cat: "機票（直飛）", rate: 3, note: "" },
+      { cat: "餐廳消費", rate: 3, note: "" },
+      { cat: "其他消費", rate: 2, note: "" },
     ],
-    bestFor: ["Marriott 飯店 6x", "Platinum 身份", "$300 餐廳 Credit"],
-    note: "每月 $25 餐廳 Credit 最好用，記得每月都要刷",
+    highlights: ["Marriott 6x", "Platinum 身份", "$300 餐廳 Credit"],
+    credits: [
+      { name: "$300 餐廳 Credit", amt: 300, note: "每月 $25 自動回饋，全球餐廳" },
+      { name: "$100 屬性 Credit", amt: 100, note: "入住 Ritz-Carlton 或 St. Regis 2 晚以上" },
+    ],
+    perks: [
+      "自動 Marriott Bonvoy Platinum 身份（含免費早餐/升等/歡迎禮）",
+      "每年 1 張 85,000 點免費夜券（卡週年贈）",
+      "25 個 Elite 夜數（加速升等）",
+      "Priority Pass（機場貴賓室）",
+      "無外幣手續費",
+    ],
   },
   {
-    id: "cap1-qs",
+    id: "cap1-quicksilver",
     name: "Capital One Quicksilver",
-    shortName: "Quicksilver",
-    issuer: "Capital One",
-    network: "Visa",
+    issuer: "CAPITAL ONE · VISA",
+    color: "#c41230",
+    gradient: "linear-gradient(135deg, #8B0000, #c41230, #8B0000)",
     annualFee: 0,
-    gradient: ["#1c1c2e", "#2d2d44", "#1c1c2e"],
-    text: "#e94560",
-    rewardType: "現金回饋 1.5%",
-    multipliers: {
-      flights: 1.5,
-      hotels: 1.5,
-      dining: 1.5,
-      grocery: 1.5,
-      rideshare: 1.5,
-      other: 1.5,
-    },
-    benefits: [
-      { icon: "💵", cat: "Cashback", label: "1.5% 無上限現金回饋", detail: "所有消費均享 1.5% Cash Back，無分類限制" },
-      { icon: "🌍", cat: "Travel", label: "0% 外幣手續費", detail: "海外刷卡不收手續費" },
-      { icon: "🛡️", cat: "Travel", label: "旅遊意外保險", detail: "旅遊取消、延誤等基本保障" },
+    pointType: "現金回饋",
+    earning: [
+      { cat: "Capital One Travel 訂飯店/租車/度假村", rate: 5, note: "透過 Capital One Travel 平台" },
+      { cat: "Capital One Entertainment 購票", rate: 5, note: "透過 Capital One Entertainment" },
+      { cat: "所有其他消費", rate: 1.5, note: "無上限無類別限制" },
     ],
-    bestFor: ["無年費保底卡", "雜項 1.5%", "海外不收手續費"],
-    note: "雜項消費最佳保底卡，無年費壓力",
+    highlights: ["所有消費 1.5%", "無年費", "無外幣手續費"],
+    credits: [],
+    perks: [
+      "無年費",
+      "無外幣手續費（適合台灣海外消費）",
+      "現金回饋不過期",
+      "Hertz Five Star 租車身份",
+      "基本旅遊保險",
+    ],
   },
   {
     id: "hsbc-elite",
     name: "HSBC US Elite",
-    shortName: "HSBC Elite",
-    issuer: "HSBC",
-    network: "Mastercard",
+    issuer: "HSBC · MASTERCARD",
+    color: "#cc0000",
+    gradient: "linear-gradient(135deg, #8B0000, #cc0000, #8B0000)",
     annualFee: 495,
-    gradient: ["#cc0000", "#990000", "#660000"],
-    text: "#ffffff",
-    rewardType: "HSBC Points",
-    multipliers: {
-      flights: 5,       // 透過 HSBC Travel (Priceline) 訂購
-      hotels: 5,        // 透過 HSBC Travel
-      dining: 2,        // 餐廳
-      grocery: 1,
-      rideshare: 1,
-      other: 1,
-    },
-    benefits: [
-      { icon: "✈️", cat: "PPS", label: "Priority Pass 無限次", detail: "含 2 位同行，全球 1,300+ 機場貴賓室" },
-      { icon: "💰", cat: "Credit", label: "$400 旅行 Credit", detail: "透過 HSBC Travel (Priceline) 訂機票/飯店/租車" },
-      { icon: "🚗", cat: "Credit", label: "$120 Rideshare Credit", detail: "每月 $10，Uber/Lyft 等叫車服務" },
-      { icon: "🛡️", cat: "Credit", label: "$120 Global Entry/TSA", detail: "每 4.5 年補貼一次" },
-      { icon: "🔄", cat: "Travel", label: "Points 轉讓 13 個夥伴", detail: "可轉 Aeroplan, British Airways, EVA Air, Qantas 等" },
-      { icon: "🏠", cat: "Credit", label: "$100 Soho House Credit", detail: "Soho House 會員房間消費補貼" },
+    pointType: "HSBC Points",
+    earning: [
+      { cat: "旅行（航班/飯店/租車）", rate: 5, note: "透過 HSBC Travel / Priceline" },
+      { cat: "餐廳消費", rate: 2, note: "" },
+      { cat: "其他消費", rate: 1, note: "" },
     ],
-    bestFor: ["HSBC Travel 訂票 5x", "PPS 含 2 同伴", "Points 轉讓航空"],
-    note: "消費倍率是 Points 制非現金，需透過 HSBC Travel 才能拿 5x",
+    highlights: ["旅行 5x", "Priority Pass 含 2 伴", "$400 旅行 Credit"],
+    credits: [
+      { name: "$400 旅行 Credit", amt: 400, note: "透過 HSBC Travel 訂機票/飯店/租車" },
+      { name: "$120 Rideshare Credit", amt: 120, note: "每月自動 $10，Uber ✅ 台灣可用（需設定美國付款）" },
+      { name: "$120 Global Entry/TSA PreCheck Credit", amt: 120, note: "每 54 個月一次（含 CLEAR）" },
+    ],
+    perks: [
+      "Priority Pass 含 2 名同伴（1,300+ 貴賓室）",
+      "HSBC 11 個航空 + 2 個飯店點數轉讓夥伴",
+      "Soho House 會籍 + $100 住宿 Credit",
+      "無外幣手續費",
+      "注意：點數兌換旅行 2025/6/30 後降為 $0.01/點",
+    ],
   },
   {
-    id: "csp",
+    id: "chase-csp",
     name: "Chase Sapphire Preferred",
-    shortName: "CSP",
-    issuer: "Chase",
-    network: "Visa",
+    issuer: "CHASE · VISA",
+    color: "#1a3a6e",
+    gradient: "linear-gradient(135deg, #0d2240, #1a3a6e, #0d2240)",
     annualFee: 95,
-    gradient: ["#003087", "#0050b3", "#001a5e"],
-    text: "#c8a84b",
-    rewardType: "UR Points",
-    multipliers: {
-      flights: 5,       // 透過 Chase Travel
-      hotels: 5,        // 透過 Chase Travel
-      dining: 3,        // 餐廳（含外送）
-      grocery: 3,       // 線上超市
-      rideshare: 5,     // Lyft
-      other: 1,
-    },
-    benefits: [
-      { icon: "🔄", cat: "Transfer", label: "UR 1:1 轉讓 14 個夥伴", detail: "United, Hyatt, SW, Singapore, Air France 等" },
-      { icon: "🍽️", cat: "Reward", label: "3x 餐廳 + 外送", detail: "含 DoorDash, Uber Eats 等外送服務" },
-      { icon: "🛒", cat: "Reward", label: "3x 線上超市", detail: "Amazon Fresh, Instacart 等線上超市" },
-      { icon: "✈️", cat: "Reward", label: "5x Chase Travel", detail: "透過 Chase Travel 訂機票/飯店享 5x" },
-      { icon: "🎁", cat: "Credit", label: "$50 飯店 Credit", detail: "每年透過 Chase Travel 訂飯店可獲 $50 補貼" },
-      { icon: "🎂", cat: "Bonus", label: "10% 週年加碼", detail: "每年周年日，前一年消費額的 10% 額外點數" },
-      { icon: "🚗", cat: "Travel", label: "主要租車保險", detail: "Primary CDW，不需動用個人保險" },
-      { icon: "🍕", cat: "Benefit", label: "免費 DashPass", detail: "一年 DashPass 會員，$0 外送費" },
+    pointType: "UR Points",
+    earning: [
+      { cat: "Chase Travel 平台訂購", rate: 5, note: "" },
+      { cat: "餐廳（含外賣外送）", rate: 3, note: "" },
+      { cat: "精選串流平台", rate: 3, note: "Netflix / Spotify 等" },
+      { cat: "線上超市購物", rate: 3, note: "不含 Target / Walmart" },
+      { cat: "其他旅行消費", rate: 2, note: "非 Chase Travel 平台" },
+      { cat: "Lyft（僅限 Lyft App）", rate: 5, note: "⚠️ 台灣無 Lyft，Uber 僅 2x（旅行類別）" },
+      { cat: "Peloton 器材（$150+）", rate: 5, note: "至 2027/12，限額 25,000 點" },
+      { cat: "其他消費", rate: 1, note: "" },
     ],
-    bestFor: ["UR 轉 Hyatt 最高價值", "餐廳/線上超市 3x", "$95 低年費"],
-    note: "UR 轉 Hyatt 是最高 CP 值用法，1 UR ≈ 2 cents",
+    highlights: ["Chase Travel 5x", "餐廳 3x", "週年 10% 加碼"],
+    credits: [
+      { name: "$50 飯店 Credit", amt: 50, note: "每年透過 Chase Travel 訂飯店自動回饋" },
+    ],
+    perks: [
+      "卡週年消費 10% 點數加碼（前一年消費 $1 = 0.1 點加碼）",
+      "DashPass 免費會員（DoorDash，美國）",
+      "旅遊取消 / 中斷保險（每人最高 $10,000）",
+      "行李延誤保險（超過 6 小時，每日最高 $100 x 5 天）",
+      "UR 點數可轉讓 14+ 航空飯店夥伴（United / Hyatt / Singapore Airlines 等）",
+      "無外幣手續費",
+    ],
   },
   {
     id: "chase-marriott",
     name: "Chase Marriott Boundless",
-    shortName: "Boundless",
-    issuer: "Chase",
-    network: "Visa",
+    issuer: "CHASE · VISA",
+    color: "#1a4a1a",
+    gradient: "linear-gradient(135deg, #0d2f0d, #1a4a1a, #0d2f0d)",
     annualFee: 95,
-    gradient: ["#3d1f00", "#7a3f00", "#2a1400"],
-    text: "#ffd700",
-    rewardType: "Bonvoy Points",
-    multipliers: {
-      flights: 2,       // 其他旅行
-      hotels: 6,        // Marriott Bonvoy 飯店
-      dining: 3,        // 餐廳/超市/加油（前 $6,000）
-      grocery: 3,       // 前 $6,000 合計
-      rideshare: 2,
-      other: 2,
-    },
-    benefits: [
-      { icon: "🌙", cat: "FreeNight", label: "年度免費夜（35K 以內）", detail: "每年一張，可搭配最多 15,000 點使用" },
-      { icon: "🥈", cat: "Status", label: "Marriott Silver Elite 身份", detail: "含 10% 點數加成、晚退、免費 Wi-Fi" },
-      { icon: "⭐", cat: "Status", label: "15 Elite 夜點數", detail: "每年自動 15 夜 Elite Credits" },
-      { icon: "✈️", cat: "Credit", label: "$100 航空 Credit", detail: "2026 年每半年 $50，花 $250 以上觸發" },
-      { icon: "🏨", cat: "Reward", label: "6x Marriott 飯店", detail: "Marriott Bonvoy 旗下 7,000+ 飯店" },
+    pointType: "Bonvoy Points",
+    earning: [
+      { cat: "Marriott 飯店消費", rate: 6, note: "" },
+      { cat: "餐廳消費", rate: 3, note: "前 $6,000/年" },
+      { cat: "超市購物", rate: 3, note: "前 $6,000/年" },
+      { cat: "加油站", rate: 3, note: "前 $6,000/年" },
+      { cat: "其他消費", rate: 2, note: "" },
     ],
-    bestFor: ["Marriott 入門免費夜", "低年費 Bonvoy 累積"],
-    note: "35K 免費夜可搭配最多 15,000 點，實際可用 50K 以內飯店",
-  },
-];
-
-const categories = [
-  { id: "flights",   icon: "✈️", label: "機票" },
-  { id: "hotels",    icon: "🏨", label: "飯店" },
-  { id: "dining",    icon: "🍽️", label: "餐廳" },
-  { id: "grocery",   icon: "🛒", label: "超市" },
-  { id: "rideshare", icon: "🚗", label: "叫車" },
-  { id: "other",     icon: "🌀", label: "其他" },
-];
-
-const travelGuide = [
-  {
-    phase: "📅 出發前訂購",
-    color: "#0f3460",
-    steps: [
-      { action: "訂機票（直接向航空）", card: "Amex Platinum", reason: "5x MR + 旅遊保險" },
-      { action: "訂機票（透過 Chase Travel）", card: "Chase Sapphire Preferred", reason: "5x UR + 主要租車保" },
-      { action: "訂 Hilton 飯店", card: "Hilton Aspire", reason: "14x + Diamond 升等" },
-      { action: "訂 Marriott 飯店", card: "Marriott Brilliant", reason: "6x + Platinum 升等" },
-      { action: "訂其他飯店（FHR）", card: "Amex Platinum", reason: "Fine Hotels 升等+早餐+$600 Credit" },
-      { action: "訂租車", card: "Chase Sapphire Preferred", reason: "主要 CDW 保險，不動個人險" },
+    highlights: ["Marriott 6x", "35K 免費夜券", "Silver 身份"],
+    credits: [
+      { name: "$100 航空 Credit", amt: 100, note: "Chase Travel 訂購機票回饋" },
     ],
-  },
-  {
-    phase: "🛫 機場使用",
-    color: "#1a3a6b",
-    steps: [
-      { action: "機場貴賓室（首選）", card: "Amex Platinum", reason: "Centurion Lounge 品質最高 + PPS" },
-      { action: "機場貴賓室（含同伴）", card: "Amex Platinum", reason: "PPS 含 2 位同行免費" },
-      { action: "備用貴賓室", card: "Hilton Aspire / Marriott Brilliant", reason: "PPS 無限次含同伴" },
-      { action: "機場餐廳", card: "Chase Sapphire Preferred", reason: "3x UR 餐廳" },
-      { action: "Uber 接送機", card: "Amex Platinum", reason: "先用 $200 Uber Cash Credit" },
-    ],
-  },
-  {
-    phase: "🏨 飯店入住",
-    color: "#1a5228",
-    steps: [
-      { action: "Hilton 飯店消費", card: "Hilton Aspire", reason: "14x + Diamond 免費升等/早餐" },
-      { action: "Marriott 飯店消費", card: "Marriott Brilliant", reason: "6x + Platinum 套房升等/早餐" },
-      { action: "高端飯店餐廳", card: "Marriott Brilliant", reason: "3x + 每月 $25 餐廳 Credit" },
-      { action: "Hilton 渡假村消費", card: "Hilton Aspire", reason: "觸發每半年 $200 渡假村 Credit" },
-    ],
-  },
-  {
-    phase: "🌍 海外日常消費",
-    color: "#2d1a5a",
-    steps: [
-      { action: "餐廳用餐", card: "Chase Sapphire Preferred", reason: "3x UR，全球適用" },
-      { action: "超市/便利店", card: "Chase Sapphire Preferred", reason: "3x 線上超市（視情況）" },
-      { action: "叫車/交通", card: "Amex Platinum", reason: "先用 Uber Cash Credit 抵消費" },
-      { action: "雜項消費", card: "Capital One Quicksilver", reason: "1.5% 保底，無外幣手續費" },
-      { action: "Hilton/Marriott 以外消費", card: "HSBC US Elite", reason: "透過 HSBC Travel 5x" },
-    ],
-  },
-  {
-    phase: "💳 Credits 使用順序",
-    color: "#3d1a00",
-    steps: [
-      { action: "每月 $15 Uber Cash", card: "Amex Platinum", reason: "月底失效，優先使用" },
-      { action: "每月 $25 餐廳 Credit", card: "Marriott Brilliant", reason: "月底失效，每月必用" },
-      { action: "每月 $10 Rideshare", card: "HSBC US Elite", reason: "月底失效，Uber/Lyft" },
-      { action: "每季 $100 Resy Credit", card: "Amex Platinum", reason: "季底失效，去 Resy 餐廳" },
-      { action: "每季 $50 航空 Credit", card: "Hilton Aspire", reason: "季底，直接向航空購買" },
-      { action: "每半年 $200 渡假村 Credit", card: "Hilton Aspire", reason: "上/下半年各一次" },
-      { action: "每半年 $300 飯店 Credit", card: "Amex Platinum", reason: "FHR 或 Hotel Collection" },
-    ],
-  },
-  {
-    phase: "🔄 點數轉讓策略",
-    color: "#1a1a1a",
-    steps: [
-      { action: "MR Points → 商務艙", card: "轉 Aeroplan / ANA", reason: "商務艙 CP 值最高" },
-      { action: "UR Points → 飯店", card: "轉 World of Hyatt", reason: "1 UR ≈ 2 cents，Hyatt 最划算" },
-      { action: "Hilton Points → 高端渡假村", card: "Aspire 免費夜 + 點數", reason: "無上限免費夜最大化" },
-      { action: "Bonvoy Points → Ritz/St.Regis", card: "Brilliant 85K 免費夜", reason: "85K 可用於頂級飯店" },
-      { action: "HSBC Points → 航空里程", card: "轉 EVA Air / British Airways", reason: "13 個轉讓夥伴，EVA 含華航聯盟" },
+    perks: [
+      "每年 1 張 35,000 點免費夜券（可搭配 15,000 點升級）",
+      "自動 Marriott Silver 身份（10 個精英夜數）",
+      "15 個精英夜數（每年），加速升等",
+      "無外幣手續費",
     ],
   },
 ];
 
-const annualCredits = [
+const travelTips = [
   {
-    card: "Amex Platinum",
-    color: "#b8941f",
-    fee: 895,
-    credits: [
-      { label: "飯店 Credit（FHR）", amt: 600 },
-      { label: "Resy 餐廳 Credit", amt: 400 },
-      { label: "Uber Cash", amt: 200 },
-      { label: "數位娛樂 Credit", amt: 300 },
-      { label: "航空附加費 Credit", amt: 200 },
-      { label: "Uber One Credit", amt: 120 },
-      { label: "CLEAR+ Credit", amt: 209 },
-      { label: "Walmart+ Credit", amt: 155 },
-      { label: "Equinox Credit", amt: 300 },
-      { label: "Lululemon Credit", amt: 300 },
-      { label: "Oura Ring Credit", amt: 200 },
-      { label: "Saks Credit", amt: 100 },
+    phase: "出發前",
+    tips: [
+      "查詢目的地有無 Priority Pass 貴賓室（HSBC Elite / Hilton Aspire 可帶 2 名同伴）",
+      "用 CSP 或 HSBC Elite 買機票（5x 點數）",
+      "Global Entry / TSA PreCheck 用 HSBC Elite 報名（$120 Credit）",
     ],
   },
   {
-    card: "Hilton Aspire",
-    color: "#2756a8",
-    fee: 550,
-    credits: [
-      { label: "Hilton 渡假村 Credit", amt: 400 },
-      { label: "航空 Credit", amt: 200 },
-      { label: "CLEAR+ Credit", amt: 209 },
-      { label: "Waldorf/Conrad Credit", amt: 100 },
+    phase: "機場",
+    tips: [
+      "Amex Platinum：Centurion Lounge + Priority Pass + Delta Sky Club（最強）",
+      "HSBC Elite / Hilton Aspire：Priority Pass（含 2 伴免費）",
+      "CLEAR 費用：Hilton Aspire $209 Credit 最划算",
     ],
   },
   {
-    card: "Marriott Brilliant",
-    color: "#a83232",
-    fee: 650,
-    credits: [
-      { label: "全球餐廳 Credit", amt: 300 },
-      { label: "飯店住宿 Credit", amt: 100 },
+    phase: "Hilton 飯店",
+    tips: [
+      "住宿刷 Hilton Aspire：14x 點數 + Diamond 免費早餐 + 升等",
+      "$400 度假村 Credit 每半年 $200（記得用度假村類型物業）",
+      "住滿 5 晚免 1 晚（Diamond 福利）",
     ],
   },
   {
-    card: "HSBC US Elite",
-    color: "#cc0000",
-    fee: 495,
-    credits: [
-      { label: "旅行 Credit（HSBC Travel）", amt: 400 },
-      { label: "Rideshare Credit", amt: 120 },
-      { label: "Global Entry/TSA", amt: 120 },
+    phase: "Marriott 飯店",
+    tips: [
+      "住宿刷 Marriott Brilliant：6x 點數 + Platinum 免費早餐 + 升等",
+      "$300 餐廳 Credit（每月 $25 自動回饋）",
+      "用 85K 免費夜券入住高階物業",
     ],
   },
   {
-    card: "Chase Sapphire Preferred",
-    color: "#0050b3",
-    fee: 95,
-    credits: [
-      { label: "Chase Travel 飯店 Credit", amt: 50 },
+    phase: "Credits 使用順序",
+    tips: [
+      "Amex Platinum $120 Uber Cash：每月 $10，設成自動用於 Uber/Uber Eats",
+      "HSBC Elite $120 Rideshare：每月 $10 自動抵扣（Uber ✅）",
+      "Hilton Aspire $200 航空：每季 $50，買機票或儲值航空帳戶",
+      "Marriott Brilliant $300 餐廳：每月 $25 自動，全球餐廳適用",
+    ],
+  },
+  {
+    phase: "點數轉讓",
+    tips: [
+      "UR → United / Hyatt / Singapore Airlines（CSP）",
+      "MR → ANA / Singapore Airlines / Air France（Amex Platinum）",
+      "HSBC → British Airways / Turkish Miles&Smiles / EVA Air 等 11 個航空夥伴",
+      "Hilton → 不建議轉航空（比例 10:1 太差）",
     ],
   },
 ];
 
-// ═══════════════════════════════════════════════════════════
-// 主元件
-// ═══════════════════════════════════════════════════════════
 export default function App() {
-  const [tab, setTab] = useState("overview");
-  const [expanded, setExpanded] = useState(null);
-  const [category, setCategory] = useState("dining");
-  const [benefitFilter, setBenefitFilter] = useState("all");
+  const [tab, setTab] = useState("cards");
+  const [expandedCard, setExpandedCard] = useState(null);
+  const [selectedCat, setSelectedCat] = useState("");
 
-  const toggle = (id) => setExpanded(expanded === id ? null : id);
-
-  const ranked = [...cards]
-    .map((c) => ({ ...c, rate: c.multipliers[category] }))
-    .sort((a, b) => b.rate - a.rate);
-
-  const topRate = ranked[0]?.rate;
-
-  const tabs = [
-    { id: "overview",   label: "📋 卡片" },
-    { id: "optimizer",  label: "🎯 最佳化" },
-    { id: "benefits",   label: "🎁 福利" },
-    { id: "travel",     label: "✈️ 旅行" },
-    { id: "credits",    label: "💰 Credits" },
+  const categories = [
+    "機票", "飯店（Hilton）", "飯店（Marriott）", "餐廳", "超市",
+    "叫車（Uber）", "串流平台", "租車", "其他消費",
   ];
 
-  const s = {
-    app: { minHeight:"100vh", background:"#080810", fontFamily:"'Segoe UI','PingFang TC',sans-serif", color:"#e0e0e8", maxWidth:540, margin:"0 auto", paddingBottom:48 },
-    header: { background:"linear-gradient(135deg,#0d0d1e 0%,#141428 60%,#0a0a18 100%)", padding:"28px 20px 18px", borderBottom:"1px solid rgba(255,255,255,0.06)" },
-    badge: { fontSize:10, letterSpacing:3, color:"#7b61ff", textTransform:"uppercase", marginBottom:4 },
-    title: { fontSize:24, fontWeight:900, letterSpacing:-0.5, color:"#fff", marginBottom:2 },
-    sub: { fontSize:12, color:"rgba(255,255,255,0.35)" },
-    tabBar: { display:"flex", background:"#0d0d18", borderBottom:"1px solid #1a1a2a", overflowX:"auto", scrollbarWidth:"none" },
-    tabBtn: (active) => ({ flex:"0 0 auto", padding:"13px 16px", background:"none", border:"none", borderBottom: active ? "2px solid #7b61ff" : "2px solid transparent", color: active ? "#7b61ff" : "rgba(255,255,255,0.35)", fontWeight: active ? 800 : 400, fontSize:13, cursor:"pointer", whiteSpace:"nowrap", transition:"all 0.2s" }),
-    body: { padding:"18px 14px" },
-    sectionLabel: { fontSize:10, letterSpacing:3, color:"#7b61ff", textTransform:"uppercase", marginBottom:10, marginTop:4 },
-    chip: (active) => ({ padding:"8px 14px", borderRadius:20, border: active ? "1.5px solid #7b61ff" : "1.5px solid #222", background: active ? "rgba(123,97,255,0.12)" : "#111118", color: active ? "#7b61ff" : "rgba(255,255,255,0.5)", fontWeight: active ? 700 : 400, fontSize:13, cursor:"pointer", transition:"all 0.2s" }),
+  const catMap = {
+    "機票": [
+      { card: "Amex Platinum", rate: 5, note: "直飛或 Amex Travel" },
+      { card: "HSBC Elite", rate: 5, note: "透過 HSBC Travel" },
+      { card: "Hilton Aspire", rate: 7, note: "直飛或 Amex Travel（Hilton 點數）" },
+      { card: "Chase CSP", rate: 3, note: "⚠️ 非 Chase Travel 平台為 2x" },
+      { card: "Marriott Brilliant", rate: 3, note: "直飛" },
+      { card: "Chase Marriott", rate: 2, note: "" },
+      { card: "Cap1 Quicksilver", rate: 1.5, note: "現金回饋" },
+    ],
+    "飯店（Hilton）": [
+      { card: "Hilton Aspire", rate: 14, note: "Hilton Points（最強）" },
+      { card: "Amex Platinum", rate: 5, note: "透過 Amex Travel" },
+      { card: "Cap1 Quicksilver", rate: 1.5, note: "現金回饋" },
+    ],
+    "飯店（Marriott）": [
+      { card: "Marriott Brilliant", rate: 6, note: "Bonvoy Points（最強）" },
+      { card: "Chase Marriott", rate: 6, note: "Bonvoy Points" },
+      { card: "HSBC Elite", rate: 5, note: "透過 HSBC Travel" },
+      { card: "Cap1 Quicksilver", rate: 1.5, note: "現金回饋" },
+    ],
+    "餐廳": [
+      { card: "Hilton Aspire", rate: 7, note: "僅限美國境內餐廳（Hilton 點數）" },
+      { card: "Chase CSP", rate: 3, note: "UR 點數，全球餐廳" },
+      { card: "Marriott Brilliant", rate: 3, note: "Bonvoy 點數，全球餐廳" },
+      { card: "Chase Marriott", rate: 3, note: "前 $6K/年" },
+      { card: "HSBC Elite", rate: 2, note: "HSBC 點數" },
+      { card: "Cap1 Quicksilver", rate: 1.5, note: "現金回饋" },
+      { card: "Amex Platinum", rate: 1, note: "" },
+    ],
+    "超市": [
+      { card: "Chase CSP", rate: 3, note: "線上超市，不含 Target/Walmart" },
+      { card: "Chase Marriott", rate: 3, note: "前 $6K/年" },
+      { card: "Cap1 Quicksilver", rate: 1.5, note: "現金回饋" },
+    ],
+    "叫車（Uber）": [
+      { card: "Amex Platinum", rate: "每月 $10", note: "Uber Cash Credit（✅ 台灣可用）" },
+      { card: "HSBC Elite", rate: "每月 $10", note: "Rideshare Credit 自動抵扣（✅ 台灣可用）" },
+      { card: "Chase CSP", rate: 2, note: "旅行類別 2x（⚠️ Lyft 才有 5x，台灣無 Lyft）" },
+      { card: "Cap1 Quicksilver", rate: 1.5, note: "現金回饋" },
+      { card: "Hilton Aspire", rate: 3, note: "其他消費類別" },
+    ],
+    "串流平台": [
+      { card: "Chase CSP", rate: 3, note: "Netflix、Spotify、Disney+ 等精選" },
+      { card: "Cap1 Quicksilver", rate: 1.5, note: "現金回饋" },
+      { card: "Amex Platinum", rate: 1, note: "（但有 $300 娛樂 Credit 可用）" },
+    ],
+    "租車": [
+      { card: "Hilton Aspire", rate: 7, note: "指定租車公司（Hilton 點數）" },
+      { card: "HSBC Elite", rate: 5, note: "透過 HSBC Travel" },
+      { card: "Chase CSP", rate: 5, note: "透過 Chase Travel" },
+      { card: "Cap1 Quicksilver", rate: 5, note: "透過 Capital One Travel" },
+      { card: "Marriott Brilliant", rate: 3, note: "" },
+    ],
+    "其他消費": [
+      { card: "Cap1 Quicksilver", rate: 1.5, note: "現金回饋，最簡單" },
+      { card: "Marriott Brilliant", rate: 2, note: "Bonvoy 點數" },
+      { card: "Chase Marriott", rate: 2, note: "Bonvoy 點數" },
+      { card: "Hilton Aspire", rate: 3, note: "Hilton 點數" },
+      { card: "Amex Platinum", rate: 1, note: "" },
+      { card: "HSBC Elite", rate: 1, note: "" },
+      { card: "Chase CSP", rate: 1, note: "" },
+    ],
   };
 
-  const CardItem = ({ card }) => {
-    const open = expanded === card.id;
-    return (
-      <div onClick={() => toggle(card.id)} style={{ marginBottom:10, borderRadius:16, overflow:"hidden", cursor:"pointer", boxShadow: open ? "0 8px 40px rgba(0,0,0,0.5)" : "0 2px 12px rgba(0,0,0,0.3)", transition:"box-shadow 0.3s" }}>
-        <div style={{ background:`linear-gradient(135deg,${card.gradient[0]},${card.gradient[1]},${card.gradient[2]})`, padding:"18px 20px" }}>
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
-            <div>
-              <div style={{ fontSize:10, opacity:0.7, letterSpacing:2, textTransform:"uppercase", color:card.text, marginBottom:3 }}>{card.issuer} · {card.network}</div>
-              <div style={{ fontSize:20, fontWeight:900, color:card.text, letterSpacing:-0.5 }}>{card.name}</div>
-              <div style={{ fontSize:11, color:card.text, opacity:0.75, marginTop:3 }}>{card.rewardType} · 年費 {card.annualFee === 0 ? "免費" : `$${card.annualFee}`}</div>
-            </div>
-            <div style={{ fontSize:18, color:card.text, opacity:0.5 }}>{open ? "▲" : "▼"}</div>
+  const annualCredits = [
+    {
+      card: "Amex Platinum",
+      fee: 895,
+      credits: [
+        { name: "$600 飯店 Credit", amt: 600 },
+        { name: "$400 Resy 餐廳 Credit", amt: 400 },
+        { name: "$300 娛樂 Credit", amt: 300 },
+        { name: "$200 航空雜費", amt: 200 },
+        { name: "$200 飯店 Credit（FHR）", amt: 200 },
+        { name: "$120 Uber Cash", amt: 120 },
+        { name: "$120 Uber One", amt: 120 },
+        { name: "$300 Lululemon", amt: 300 },
+        { name: "$200 Oura Ring", amt: 200 },
+      ],
+    },
+    {
+      card: "Hilton Aspire",
+      fee: 550,
+      credits: [
+        { name: "$400 度假村 Credit", amt: 400 },
+        { name: "$200 航空 Credit", amt: 200 },
+        { name: "$209 CLEAR+", amt: 209 },
+      ],
+    },
+    {
+      card: "Marriott Brilliant",
+      fee: 650,
+      credits: [
+        { name: "$300 餐廳 Credit", amt: 300 },
+        { name: "$100 屬性 Credit", amt: 100 },
+      ],
+    },
+    {
+      card: "HSBC Elite",
+      fee: 495,
+      credits: [
+        { name: "$400 旅行 Credit", amt: 400 },
+        { name: "$120 Rideshare（Uber ✅）", amt: 120 },
+        { name: "$120 Global Entry", amt: 120 },
+      ],
+    },
+    {
+      card: "Chase CSP",
+      fee: 95,
+      credits: [
+        { name: "$50 飯店 Credit", amt: 50 },
+      ],
+    },
+    {
+      card: "Chase Marriott",
+      fee: 95,
+      credits: [
+        { name: "$100 航空 Credit", amt: 100 },
+      ],
+    },
+    {
+      card: "Cap1 Quicksilver",
+      fee: 0,
+      credits: [],
+    },
+  ];
+
+  const styles = {
+    container: { minHeight: "100vh", background: "#0a0a0a", color: "#fff", fontFamily: "'Segoe UI', sans-serif", padding: "0" },
+    header: { background: "linear-gradient(135deg, #111, #1a1a2e)", padding: "20px 20px 0", borderBottom: "1px solid #333" },
+    title: { fontSize: 22, fontWeight: 900, background: "linear-gradient(90deg, #ffd700, #ff8c00)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 },
+    subtitle: { fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 4, marginBottom: 16 },
+    tabs: { display: "flex", gap: 0, borderBottom: "none" },
+    tab: (active) => ({ padding: "10px 14px", fontSize: 12, cursor: "pointer", background: "none", border: "none", color: active ? "#ffd700" : "rgba(255,255,255,0.4)", borderBottom: active ? "2px solid #ffd700" : "2px solid transparent", fontWeight: active ? 700 : 400, transition: "all 0.2s" }),
+    content: { padding: "16px" },
+    card: (gradient) => ({ background: gradient, borderRadius: 14, padding: "16px", marginBottom: 12, cursor: "pointer", border: "1px solid rgba(255,255,255,0.1)", transition: "transform 0.2s", position: "relative", overflow: "hidden" }),
+    cardIssuer: { fontSize: 9, color: "rgba(255,255,255,0.5)", letterSpacing: 1, marginBottom: 4 },
+    cardName: { fontSize: 20, fontWeight: 900, color: "#fff", marginBottom: 6 },
+    tag: { display: "inline-block", background: "rgba(0,0,0,0.35)", borderRadius: 20, padding: "3px 10px", fontSize: 11, color: "#fff", marginRight: 6, marginBottom: 4 },
+    expandedSection: { background: "rgba(0,0,0,0.4)", borderRadius: 10, padding: "14px", marginTop: 12 },
+    sectionTitle: { fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: 1, marginBottom: 8, textTransform: "uppercase" },
+    earningRow: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.08)" },
+    rateText: { fontSize: 18, fontWeight: 900, color: "#ffd700" },
+    catSelect: { width: "100%", background: "#1a1a2e", color: "#fff", border: "1px solid #333", borderRadius: 10, padding: "12px", fontSize: 14, marginBottom: 16, outline: "none" },
+    resultCard: (i) => ({ background: i === 0 ? "linear-gradient(135deg, #1a3a1a, #2a5a2a)" : "rgba(255,255,255,0.04)", borderRadius: 10, padding: "12px 14px", marginBottom: 8, border: i === 0 ? "1px solid #4a8a4a" : "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }),
+    creditCard: { background: "rgba(255,255,255,0.04)", borderRadius: 12, padding: "16px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.1)" },
+    creditRow: { display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,0.06)", alignItems: "flex-start" },
+    summaryBox: { background: "linear-gradient(135deg, #141428,#0d0d1e)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: 14, padding: "18px 16px", textAlign: "center" },
+    tipPhase: { background: "rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px", marginBottom: 12, border: "1px solid rgba(255,255,255,0.08)" },
+    perkRow: { display: "flex", alignItems: "flex-start", gap: 8, padding: "4px 0" },
+  };
+
+  const renderCards = () => (
+    <div>
+      {cards.map(c => (
+        <div key={c.id} style={styles.card(c.gradient)} onClick={() => setExpandedCard(expandedCard === c.id ? null : c.id)}>
+          <div style={styles.cardIssuer}>{c.issuer}</div>
+          <div style={styles.cardName}>{c.name}</div>
+          <div style={{ marginBottom: 8 }}>
+            <span style={styles.tag}>{c.pointType}</span>
+            <span style={styles.tag}>年費 ${c.annualFee}</span>
           </div>
-          {!open && (
-            <div style={{ display:"flex", gap:6, marginTop:12, flexWrap:"wrap" }}>
-              {card.bestFor.map(b => (
-                <span key={b} style={{ background:"rgba(255,255,255,0.18)", borderRadius:20, padding:"3px 10px", fontSize:11, color:card.text, fontWeight:600 }}>{b}</span>
+          <div>
+            {c.highlights.map((h, i) => <span key={i} style={{ ...styles.tag, background: "rgba(255,215,0,0.2)", color: "#ffd700" }}>{h}</span>)}
+          </div>
+          {expandedCard === c.id && (
+            <div style={styles.expandedSection} onClick={e => e.stopPropagation()}>
+              <div style={styles.sectionTitle}>消費倍率</div>
+              {c.earning.map((e, i) => (
+                <div key={i} style={styles.earningRow}>
+                  <div>
+                    <div style={{ fontSize: 13 }}>{e.cat}</div>
+                    {e.note && <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)" }}>{e.note}</div>}
+                  </div>
+                  <div style={styles.rateText}>{typeof e.rate === 'number' ? `${e.rate}x` : e.rate}</div>
+                </div>
               ))}
+              {c.credits.length > 0 && (
+                <>
+                  <div style={{ ...styles.sectionTitle, marginTop: 14 }}>年度 Credits</div>
+                  {c.credits.map((cr, i) => (
+                    <div key={i} style={styles.earningRow}>
+                      <div>
+                        <div style={{ fontSize: 13 }}>{cr.name}</div>
+                        <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)" }}>{cr.note}</div>
+                      </div>
+                      <div style={{ ...styles.rateText, color: "#4caf50" }}>${cr.amt}</div>
+                    </div>
+                  ))}
+                </>
+              )}
+              {c.perks.length > 0 && (
+                <>
+                  <div style={{ ...styles.sectionTitle, marginTop: 14 }}>特殊福利</div>
+                  {c.perks.map((p, i) => (
+                    <div key={i} style={styles.perkRow}>
+                      <span style={{ color: "#ffd700", fontSize: 12 }}>✦</span>
+                      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.85)" }}>{p}</span>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           )}
         </div>
-        {open && (
-          <div style={{ background:"#10101e", padding:"14px 16px" }}>
-            {card.note && (
-              <div style={{ background:"rgba(123,97,255,0.08)", border:"1px solid rgba(123,97,255,0.2)", borderRadius:8, padding:"8px 12px", fontSize:12, color:"rgba(200,180,255,0.8)", marginBottom:12 }}>
-                💡 {card.note}
+      ))}
+    </div>
+  );
+
+  const renderOptimize = () => (
+    <div>
+      <select style={styles.catSelect} value={selectedCat} onChange={e => setSelectedCat(e.target.value)}>
+        <option value="">— 選擇消費類別 —</option>
+        {categories.map(c => <option key={c} value={c}>{c}</option>)}
+      </select>
+      {selectedCat && catMap[selectedCat] && (
+        <div>
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginBottom: 12 }}>
+            「{selectedCat}」最佳刷卡順序：
+          </div>
+          {catMap[selectedCat].map((r, i) => (
+            <div key={i} style={styles.resultCard(i)}>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 14 }}>{r.card}</div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{r.note}</div>
+              </div>
+              <div style={{ fontSize: 20, fontWeight: 900, color: i === 0 ? "#4caf50" : "#ffd700" }}>
+                {typeof r.rate === 'number' ? `${r.rate}x` : r.rate}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  const renderTravel = () => (
+    <div>
+      {travelTips.map((t, i) => (
+        <div key={i} style={styles.tipPhase}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#ffd700", marginBottom: 10 }}>📍 {t.phase}</div>
+          {t.tips.map((tip, j) => (
+            <div key={j} style={styles.perkRow}>
+              <span style={{ color: "#ffd700", fontSize: 12 }}>▸</span>
+              <span style={{ fontSize: 12.5, color: "rgba(255,255,255,0.85)", lineHeight: 1.6 }}>{tip}</span>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+
+  const renderCredits = () => (
+    <div>
+      {annualCredits.map((card, idx) => {
+        const total = card.credits.reduce((s, c) => s + c.amt, 0);
+        const net = total - card.fee;
+        return (
+          <div key={idx} style={styles.creditCard}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10, paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+              <div style={{ fontWeight: 700, fontSize: 15 }}>{card.card}</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>年費 ${card.fee}</div>
+            </div>
+            {card.credits.length === 0 && (
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", fontStyle: "italic" }}>無 Credit（但無年費）</div>
+            )}
+            {card.credits.map((cr, i) => (
+              <div key={i} style={styles.creditRow}>
+                <div style={{ fontSize: 12, flex: 1 }}>{cr.name}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#4caf50", minWidth: 50, textAlign: "right" }}>${cr.amt}</div>
+              </div>
+            ))}
+            {card.credits.length > 0 && (
+              <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 10, marginTop: 6 }}>
+                <div>
+                  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)" }}>Credits 總計</div>
+                  <div style={{ fontSize: 18, fontWeight: 900, color: "#ffd700" }}>${total.toLocaleString()}</div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)" }}>扣除年費後</div>
+                  <div style={{ fontSize: 18, fontWeight: 900, color: net >= 0 ? "#4caf50" : "#f44336" }}>{net >= 0 ? "+" : ""}{net.toLocaleString()}</div>
+                </div>
               </div>
             )}
-            <div style={s.sectionLabel}>消費倍率</div>
-            <div style={{ display:"flex", gap:7, flexWrap:"wrap", marginBottom:14 }}>
-              {categories.map(cat => {
-                const val = card.multipliers[cat.id];
-                const isTop = val >= 5;
-                return (
-                  <div key={cat.id} style={{ background: isTop ? "rgba(123,97,255,0.15)" : "#1a1a2a", border: isTop ? "1px solid rgba(123,97,255,0.4)" : "1px solid #222", borderRadius:10, padding:"7px 10px", textAlign:"center", minWidth:48 }}>
-                    <div style={{ fontSize:15 }}>{cat.icon}</div>
-                    <div style={{ fontSize:14, fontWeight:900, color: isTop ? "#a08cff" : "#888" }}>{val}x</div>
-                    <div style={{ fontSize:9, color:"rgba(255,255,255,0.4)" }}>{cat.label}</div>
-                  </div>
-                );
-              })}
-            </div>
-            <div style={s.sectionLabel}>主要福利</div>
-            {card.benefits.map(b => (
-              <div key={b.label} style={{ display:"flex", gap:10, padding:"8px 0", borderBottom:"1px solid #1a1a2a" }}>
-                <span style={{ fontSize:18, flexShrink:0 }}>{b.icon}</span>
-                <div>
-                  <div style={{ fontSize:13, fontWeight:700, color:"#fff" }}>{b.label}</div>
-                  <div style={{ fontSize:11, color:"rgba(255,255,255,0.45)", marginTop:1 }}>{b.detail}</div>
-                </div>
-              </div>
-            ))}
           </div>
-        )}
+        );
+      })}
+      <div style={styles.summaryBox}>
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginBottom: 6 }}>全部卡片 · Credits 總計（充分使用時）</div>
+        <div style={{ fontSize: 36, fontWeight: 900, color: "#ffd700" }}>
+          ${annualCredits.reduce((s, i) => s + i.credits.reduce((ss, c) => ss + c.amt, 0), 0).toLocaleString()}
+        </div>
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 4 }}>
+          年費總計 ${annualCredits.reduce((s, i) => s + i.fee, 0).toLocaleString()} ·
+          淨節省 ${(annualCredits.reduce((s, i) => s + i.credits.reduce((ss, c) => ss + c.amt, 0), 0) - annualCredits.reduce((s, i) => s + i.fee, 0)).toLocaleString()}
+        </div>
+        <div style={{ fontSize: 10, color: "rgba(255,255,255,0.25)", marginTop: 8 }}>*需實際使用所有 Credits 才能達到此金額</div>
       </div>
-    );
-  };
+    </div>
+  );
 
   return (
-    <div style={s.app}>
-      {/* Header */}
-      <div style={s.header}>
-        <div style={s.badge}>💳 Grant's Wallet</div>
-        <div style={s.title}>信用卡策略筆記本</div>
-        <div style={s.sub}>2025/2026 最新版 · {cards.length} 張美卡 · 資料已核實</div>
+    <div style={styles.container}>
+      <div style={styles.header}>
+        <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: 2, marginBottom: 4 }}>GRANT'S WALLET</div>
+        <div style={styles.title}>信用卡策略筆記本</div>
+        <div style={styles.subtitle}>7 張卡完整福利 · 消費最佳化 · 旅行攻略 · Credits 追蹤</div>
+        <div style={styles.tabs}>
+          {[["cards","卡片"],["optimize","消費"],["travel","旅行"],["credits","Credits"]].map(([k,v]) => (
+            <button key={k} style={styles.tab(tab===k)} onClick={() => setTab(k)}>{v}</button>
+          ))}
+        </div>
       </div>
-
-      {/* Tabs */}
-      <div style={s.tabBar}>
-        {tabs.map(t => (
-          <button key={t.id} style={s.tabBtn(tab === t.id)} onClick={() => setTab(t.id)}>{t.label}</button>
-        ))}
-      </div>
-
-      <div style={s.body}>
-
-        {/* ──── 卡片總覽 ──── */}
-        {tab === "overview" && (
-          <div>
-            <div style={{ ...s.sectionLabel, marginBottom:14 }}>點擊卡片展開詳細資料 ↓</div>
-            {cards.map(c => <CardItem key={c.id} card={c} />)}
-          </div>
-        )}
-
-        {/* ──── 消費最佳化 ──── */}
-        {tab === "optimizer" && (
-          <div>
-            <div style={{ fontSize:18, fontWeight:900, marginBottom:2 }}>今天消費，刷哪張？</div>
-            <div style={{ fontSize:12, color:"rgba(255,255,255,0.35)", marginBottom:18 }}>選消費類別，系統自動排序</div>
-
-            <div style={{ display:"flex", gap:7, flexWrap:"wrap", marginBottom:24 }}>
-              {categories.map(cat => (
-                <button key={cat.id} style={s.chip(category === cat.id)} onClick={() => setCategory(cat.id)}>
-                  {cat.icon} {cat.label}
-                </button>
-              ))}
-            </div>
-
-            <div style={s.sectionLabel}>推薦刷卡順序</div>
-            {ranked.map((card, i) => {
-              const isBest = card.rate === topRate;
-              return (
-                <div key={card.id} style={{ background:`linear-gradient(135deg,${card.gradient[0]},${card.gradient[1]})`, borderRadius:14, padding:"14px 16px", marginBottom:9, display:"flex", alignItems:"center", gap:14, opacity: card.rate < 1.5 ? 0.6 : 1 }}>
-                  <div style={{ width:34, height:34, borderRadius:"50%", background:"rgba(255,255,255,0.18)", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:900, fontSize:16, color:card.text, flexShrink:0 }}>{i+1}</div>
-                  <div style={{ flex:1 }}>
-                    <div style={{ fontSize:15, fontWeight:800, color:card.text }}>{card.name}</div>
-                    <div style={{ fontSize:11, color:card.text, opacity:0.75 }}>{card.rewardType}</div>
-                  </div>
-                  <div style={{ background: isBest ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.15)", borderRadius:20, padding:"5px 14px", fontWeight:900, fontSize:20, color:card.text }}>
-                    {card.rate}x
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* 對照表 */}
-            <div style={{ marginTop:28 }}>
-              <div style={s.sectionLabel}>全卡對照表（🥇=最高倍率）</div>
-              <div style={{ overflowX:"auto", borderRadius:12, border:"1px solid #1a1a2a" }}>
-                <table style={{ width:"100%", borderCollapse:"collapse", fontSize:11 }}>
-                  <thead>
-                    <tr style={{ background:"#12121e" }}>
-                      <th style={{ padding:"9px 10px", textAlign:"left", color:"rgba(255,255,255,0.4)", fontWeight:600, whiteSpace:"nowrap" }}>卡片</th>
-                      {categories.map(c => (
-                        <th key={c.id} style={{ padding:"9px 7px", textAlign:"center", color: category === c.id ? "#7b61ff" : "rgba(255,255,255,0.4)", fontWeight:600 }}>{c.icon}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cards.map((card, idx) => (
-                      <tr key={card.id} style={{ background: idx%2===0 ? "#0f0f1a" : "#0b0b14", borderTop:"1px solid #1a1a2a" }}>
-                        <td style={{ padding:"9px 10px", fontWeight:700, color:"#ccc", whiteSpace:"nowrap" }}>{card.shortName}</td>
-                        {categories.map(cat => {
-                          const val = card.multipliers[cat.id];
-                          const best = Math.max(...cards.map(c => c.multipliers[cat.id]));
-                          const isBest = val === best;
-                          return (
-                            <td key={cat.id} style={{ padding:"9px 7px", textAlign:"center" }}>
-                              <span style={{ fontWeight: isBest ? 900 : 400, color: isBest ? "#ffd700" : "rgba(255,255,255,0.35)", fontSize: isBest ? 13 : 11 }}>
-                                {isBest ? "🥇" : ""}{val}x
-                              </span>
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div style={{ fontSize:10, color:"rgba(255,255,255,0.25)", marginTop:5, textAlign:"right" }}>* HSBC 5x 需透過 HSBC Travel 訂購 · CSP 5x 需透過 Chase Travel</div>
-            </div>
-          </div>
-        )}
-
-        {/* ──── 特殊福利 ──── */}
-        {tab === "benefits" && (
-          <div>
-            <div style={{ fontSize:18, fontWeight:900, marginBottom:2 }}>特殊福利彙整</div>
-            <div style={{ fontSize:12, color:"rgba(255,255,255,0.35)", marginBottom:18 }}>PPS · 免費夜 · 飯店身份 · 點數轉讓</div>
-
-            <div style={{ display:"flex", gap:7, flexWrap:"wrap", marginBottom:20 }}>
-              {[{id:"all",l:"全部"},{id:"PPS",l:"✈️ 貴賓室"},{id:"FreeNight",l:"🌙 免費夜"},{id:"Status",l:"💎 身份"},{id:"Transfer",l:"🔄 轉讓"}].map(f => (
-                <button key={f.id} style={s.chip(benefitFilter===f.id)} onClick={() => setBenefitFilter(f.id)}>{f.l}</button>
-              ))}
-            </div>
-
-            {cards.map(card => {
-              const filtered = card.benefits.filter(b => benefitFilter === "all" || b.cat === benefitFilter);
-              if (filtered.length === 0) return null;
-              return (
-                <div key={card.id} style={{ marginBottom:14 }}>
-                  <div style={{ background:`linear-gradient(90deg,${card.gradient[0]},${card.gradient[1]})`, borderRadius:"12px 12px 0 0", padding:"10px 14px", fontSize:13, fontWeight:800, color:card.text }}>{card.name}</div>
-                  <div style={{ background:"#10101e", border:"1px solid #1a1a2a", borderTop:"none", borderRadius:"0 0 12px 12px" }}>
-                    {filtered.map((b, i) => (
-                      <div key={b.label} style={{ display:"flex", gap:10, padding:"10px 14px", borderBottom: i < filtered.length-1 ? "1px solid #1a1a2a" : "none" }}>
-                        <span style={{ fontSize:20, flexShrink:0 }}>{b.icon}</span>
-                        <div>
-                          <div style={{ fontSize:13, fontWeight:700, color:"#fff" }}>{b.label}</div>
-                          <div style={{ fontSize:11, color:"rgba(255,255,255,0.4)", marginTop:1 }}>{b.detail}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* ──── 旅行攻略 ──── */}
-        {tab === "travel" && (
-          <div>
-            <div style={{ fontSize:18, fontWeight:900, marginBottom:2 }}>旅行用卡攻略</div>
-            <div style={{ fontSize:12, color:"rgba(255,255,255,0.35)", marginBottom:18 }}>每個場景的最優刷卡策略</div>
-            {travelGuide.map(section => (
-              <div key={section.phase} style={{ marginBottom:14 }}>
-                <div style={{ background:section.color, borderRadius:"12px 12px 0 0", padding:"11px 14px", fontSize:14, fontWeight:800 }}>{section.phase}</div>
-                <div style={{ background:"#10101e", border:"1px solid #1a1a2a", borderTop:"none", borderRadius:"0 0 12px 12px" }}>
-                  {section.steps.map((step, i) => (
-                    <div key={i} style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, padding:"11px 14px", borderBottom: i < section.steps.length-1 ? "1px solid #1a1a2a" : "none" }}>
-                      <div>
-                        <div style={{ fontSize:10, color:"rgba(255,255,255,0.3)", marginBottom:2 }}>消費情境</div>
-                        <div style={{ fontSize:12, fontWeight:700, color:"#ddd" }}>{step.action}</div>
-                      </div>
-                      <div>
-                        <div style={{ fontSize:12, color:"#7b61ff", fontWeight:700, marginBottom:2 }}>{step.card}</div>
-                        <div style={{ fontSize:11, color:"rgba(255,255,255,0.4)" }}>{step.reason}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* ──── Credits 追蹤 ──── */}
-        {tab === "credits" && (
-          <div>
-            <div style={{ fontSize:18, fontWeight:900, marginBottom:2 }}>年度 Credits 彙整</div>
-            <div style={{ fontSize:12, color:"rgba(255,255,255,0.35)", marginBottom:18 }}>充分使用 Credits 是高年費卡的關鍵</div>
-
-            {annualCredits.map(item => {
-              const total = item.credits.reduce((s,c) => s+c.amt, 0);
-              const net = total - item.fee;
-              return (
-                <div key={item.card} style={{ marginBottom:14, background:"#10101e", border:"1px solid #1a1a2a", borderRadius:14, overflow:"hidden" }}>
-                  <div style={{ background:`linear-gradient(90deg,${item.color}99,${item.color}44)`, padding:"12px 14px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                    <div style={{ fontSize:14, fontWeight:800, color:"#fff" }}>{item.card}</div>
-                    <div style={{ fontSize:11, color:"rgba(255,255,255,0.6)" }}>年費 ${item.fee}</div>
-                  </div>
-                  <div style={{ padding:"12px 14px" }}>
-                    <div style={{ display:"flex", flexWrap:"wrap", gap:7, marginBottom:12 }}>
-                      {item.credits.map(c => (
-                        <div key={c.label} style={{ background:"rgba(123,97,255,0.08)", border:"1px solid rgba(123,97,255,0.15)", borderRadius:8, padding:"5px 10px" }}>
-                          <div style={{ fontSize:10, color:"rgba(255,255,255,0.4)" }}>{c.label}</div>
-                          <div style={{ fontSize:15, fontWeight:900, color:"#a08cff" }}>${c.amt}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{ display:"flex", justifyContent:"space-between", borderTop:"1px solid #1a1a2a", paddingTop:10 }}>
-                      <div>
-                        <div style={{ fontSize:10, color:"rgba(255,255,255,0.35)" }}>Credits 總計</div>
-                        <div style={{ fontSize:18, fontWeight:900, color:"#ffd700" }}>${total.toLocaleString()}</div>
-                      </div>
-                      <div style={{ textAlign:"right" }}>
-                        <div style={{ fontSize:10, color:"rgba(255,255,255,0.35)" }}>扣除年費後</div>
-                        <div style={{ fontSize:18, fontWeight:900, color: net >= 0 ? "#4caf50" : "#f44336" }}>{net >= 0 ? "+" : ""}${net.toLocaleString()}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* 總計 */}
-            <div style={{ background:"linear-gradient(135deg,#141428,#0d0d1e)", border:"1px solid rgba(123,97,255,0.3)", borderRadius:14, padding:"18px 16px", textAlign:"center" }}>
-              <div style={{ fontSize:12, color:"rgba(255,255,255,0.4)", marginBottom:6 }}>全部卡片 · Credits 總計（充分使用時）</div>
-              <div style={{ fontSize:36, fontWeight:900, color:"#ffd700" }}>
-                ${annualCredits.reduce((s,i) => s + i.credits.reduce((ss,c) => ss+c.amt, 0), 0).toLocaleString()}
-              </div>
-              <div style={{ fontSize:12, color:"rgba(255,255,255,0.35)", marginTop:4 }}>
-                年費總計 ${annualCredits.reduce((s,i) => s+i.fee, 0).toLocaleString()} ·
-                淨節省 ${(annualCredits.reduce((s,i) => s + i.credits.reduce((ss,c) => ss+c.amt, 0), 0) - annualCredits.reduce((s,i) => s+i.fee, 0)).toLocaleString()}
-              </div>
-              <div style={{ fontSize:10, color:"rgba(255,255,255,0.25)", marginTop:8 }}>*需實際使用所有 Credits 才能達到此金額</div>
-            </div>
-          </div>
-        )}
-
+      <div style={styles.content}>
+        {tab === "cards" && renderCards()}
+        {tab === "optimize" && renderOptimize()}
+        {tab === "travel" && renderTravel()}
+        {tab === "credits" && renderCredits()}
       </div>
     </div>
   );
