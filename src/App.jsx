@@ -297,7 +297,7 @@ export default function App() {
       { card: "Cap1 Quicksilver", rate: 1.5, note: "現金回饋" },
     ],
     "叫車（Uber）": [
-      { card: "Amex Platinum", rate: "每月 $10", note: "Uber Cash Credit（✅ 台灣可用）" },
+      { card: "Amex Platinum", rate: "每月 $10", note: "Uber Cash Credit（⚠️ 僅限美國境內）" },
       { card: "HSBC Elite", rate: "每月 $10", note: "Rideshare Credit 自動抵扣（✅ 台灣可用）" },
       { card: "Chase CSP", rate: 2, note: "旅行類別 2x（⚠️ Lyft 才有 5x，台灣無 Lyft）" },
       { card: "Cap1 Quicksilver", rate: 1.5, note: "現金回饋" },
