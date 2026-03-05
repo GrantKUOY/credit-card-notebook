@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scratch程式組 備賽資料</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  :root {
+    --purple: #7C3AED;
+    --purple-light: #A78BFA;
+    --purple-dark: #4C1D95;
+    --yellow: #F59E0B;
+    --yellow-light: #FEF3C7;
+    --green: #10B981;
+    --green-light: #D1FAE5;
+    --blue: #3B82F6;
+    --blue-light: #DBEAFE;
+    --red: #EF4444;
+    --red-light: #FEE2E2;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-700: #374151;
+    --gray-900: #111827;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #0F0A1E;
+    color: #E2E8F0;
+    min-height: 100vh;
+  }
+
+  /* ── 頁首 ── */
+  .hero {
+    background: linear-gradient(135deg, #1E0B3C 0%, #0F0A1E 50%, #0A1628 100%);
+    padding: 48px 32px 36px;
+    text-align: center;
+    border-bottom: 1px solid rgba(124,58,237,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(124,58,237,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(59,130,246,0.1) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(124,58,237,0.2);
+    border: 1px solid rgba(124,58,237,0.4);
+    color: #A78BFA;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero h1 {
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .hero h1 span { color: #A78BFA; }
+  .hero p {
+    color: #94A3B8;
+    font-size: 14px;
+    position: relative;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .hero-meta span {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #CBD5E1;
+  }
+  .hero-meta span strong { color: #F59E0B; }
+
+  /* ── 導覽 ── */
+  .nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: #150C2E;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    padding: 14px 24px;
+    background: none;
+    border: none;
+    color: #64748B;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { color: #A78BFA; }
+  .nav-btn.active {
+    color: #A78BFA;
+    border-bottom-color: #7C3AED;
+    background: rgba(124,58,237,0.08);
+  }
+
+  /* ── 主內容 ── */
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── 練習計畫 ── */
+  .plan-intro {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(59,130,246,0.1));
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .plan-intro h2 { font-size: 18px; color: #A78BFA; margin-bottom: 8px; }
+  .plan-intro p { font-size: 13px; color: #94A3B8; line-height: 1.7; }
+
+  .week-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 16px;
+  }
+  .week-badge {
+    background: var(--purple);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .week-title h3 { font-size: 16px; color: #E2E8F0; }
+
+  .day-card {
+    background: #1A1033;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .day-card:hover { border-color: rgba(124,58,237,0.4); }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    background: rgba(255,255,255,0.02);
+  }
+  .day-dot {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  .day-dot.teacher { background: rgba(124,58,237,0.25); color: #A78BFA; border: 1px solid rgba(124,58,237,0.4); }
+  .day-dot.self { background: rgba(255,255,255,0.06); color: #64748B; border: 1px solid rgba(255,255,255,0.1); }
+  .day-info { flex: 1; }
+  .day-info .date { font-size: 13px; font-weight: 700; color: #E2E8F0; }
+  .day-info .subtitle { font-size: 11px; color: #64748B; margin-top: 2px; }
+  .day-tag {
+    font-size: 10px; font-weight: 700; padding: 3px 10px;
+    border-radius: 100px;
+  }
+  .day-tag.teacher-tag { background: rgba(124,58,237,0.2); color: #A78BFA; border: 1px solid rgba(124,58,237,0.3); }
+  .day-tag.self-tag { background: rgba(255,255,255,0.05); color: #64748B; border: 1px solid rgba(255,255,255,0.1); }
+  .day-arrow { color: #64748B; font-size: 12px; transition: transform 0.2s; }
+  .day-card.open .day-arrow { transform: rotate(180deg); }
+
+  .day-body {
+    display: none;
+    padding: 0 18px 16px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .day-card.open .day-body { display: block; }
+
+  .task-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .task-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 13px; color: #CBD5E1; line-height: 1.6;
+  }
+  .task-num {
+    min-width: 22px; height: 22px;
+    background: rgba(124,58,237,0.2);
+    color: #A78BFA;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .doc-remind {
+    margin-top: 12px;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #FCD34D;
+  }
+  .doc-remind strong { color: #F59E0B; }
+
+  /* ── 評分提醒 ── */
+  .score-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 500px) { .score-grid { grid-template-columns: 1fr; } }
+  .score-card {
+    border-radius: 12px;
+    padding: 18px;
+    border: 1px solid;
+  }
+  .score-card.big {
+    background: rgba(16,185,129,0.08);
+    border-color: rgba(16,185,129,0.3);
+  }
+  .score-card.small {
+    background: rgba(124,58,237,0.08);
+    border-color: rgba(124,58,237,0.3);
+  }
+  .score-card .pct {
+    font-size: 36px; font-weight: 900;
+    line-height: 1;
+  }
+  .score-card.big .pct { color: #34D399; }
+  .score-card.small .pct { color: #A78BFA; }
+  .score-card .label { font-size: 13px; color: #94A3B8; margin-top: 4px; }
+  .score-card .tip { font-size: 11px; margin-top: 8px; }
+  .score-card.big .tip { color: #6EE7B7; }
+  .score-card.small .tip { color: #C4B5FD; }
+
+  .checklist {
+    background: #1A1033;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .checklist h4 { font-size: 13px; color: #94A3B8; margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; }
+  .check-item {
+    display: flex; gap: 10px; align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px; color: #CBD5E1;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item:hover { color: #fff; }
+  .check-box {
+    width: 20px; height: 20px;
+    border: 2px solid rgba(124,58,237,0.4);
+    border-radius: 5px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .check-item.checked .check-box {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: white;
+    font-size: 12px;
+  }
+  .check-item.checked span { text-decoration: line-through; color: #4B5563; }
+
+  /* ── 心智圖說明文件 ── */
+  .doc-tabs {
+    display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .doc-tab {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    color: #64748B;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .doc-tab:hover { color: #A78BFA; border-color: rgba(124,58,237,0.3); }
+  .doc-tab.active {
+    background: rgba(124,58,237,0.2);
+    border-color: rgba(124,58,237,0.5);
+    color: #A78BFA;
+  }
+  .doc-panel { display: none; }
+  .doc-panel.active { display: block; }
+
+  /* 心智圖 */
+  .mindmap {
+    background: #120D24;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 28px 20px;
+    margin-bottom: 20px;
+  }
+  .mindmap-title {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .mindmap-title .topic-label { font-size: 10px; letter-spacing: 2px; color: #64748B; text-transform: uppercase; margin-bottom: 6px; }
+  .mindmap-title .topic {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--purple);
+    color: white;
+    font-size: 15px; font-weight: 800;
+    padding: 10px 24px;
+    border-radius: 12px;
+    box-shadow: 0 0 24px rgba(124,58,237,0.4);
+  }
+
+  .mm-section {
+    margin-bottom: 20px;
+    border: 1px solid;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .mm-section-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+  }
+  .mm-section-header .sec-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .mm-section-body {
+    padding: 0 16px 14px;
+  }
+
+  /* Section 1 問題需求 */
+  .mm-section.s1 { background: rgba(59,130,246,0.07); border-color: rgba(59,130,246,0.25); }
+  .mm-section.s1 .mm-section-header { color: #93C5FD; }
+  .mm-section.s1 .sec-icon { background: rgba(59,130,246,0.2); }
+  /* Section 2 角色設計 */
+  .mm-section.s2 { background: rgba(16,185,129,0.07); border-color: rgba(16,185,129,0.25); }
+  .mm-section.s2 .mm-section-header { color: #6EE7B7; }
+  .mm-section.s2 .sec-icon { background: rgba(16,185,129,0.2); }
+  /* Section 3 流程圖 */
+  .mm-section.s3 { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.25); }
+  .mm-section.s3 .mm-section-header { color: #FCD34D; }
+  .mm-section.s3 .sec-icon { background: rgba(245,158,11,0.2); }
+
+  .mm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .mm-node {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .mm-node .node-title {
+    font-size: 11px; font-weight: 700;
+    color: #94A3B8; letter-spacing: 0.5px; margin-bottom: 6px;
+  }
+  .mm-node .node-items {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .mm-node .node-items li {
+    font-size: 12px; color: #CBD5E1;
+    display: flex; gap: 6px; align-items: flex-start;
+    line-height: 1.4;
+  }
+  .mm-node .node-items li::before {
+    content: '›'; color: #64748B; flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* 流程圖 */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-top: 12px;
+  }
+  .flow-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 12px; font-weight: 600;
+    text-align: center;
+    min-width: 110px;
+    border: 1px solid;
+    line-height: 1.4;
+  }
+  .flow-node.start-end {
+    background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.4);
+    color: #A78BFA; border-radius: 100px;
+  }
+  .flow-node.process {
+    background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3);
+    color: #93C5FD;
+  }
+  .flow-node.decision {
+    background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.3);
+    color: #FCD34D;
+    border-radius: 4px;
+    transform: rotate(0deg);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    padding: 18px 20px;
+    min-width: 120px;
+  }
+  .flow-arrow {
+    font-size: 18px; color: #374151;
+    margin: 4px 0;
+    text-align: center;
+  }
+  .flow-branch {
+    display: flex; gap: 32px; align-items: flex-start;
+    justify-content: center;
+  }
+  .flow-branch-item {
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+  }
+  .flow-branch-label {
+    font-size: 10px; color: #64748B; margin: 2px 0;
+  }
+
+  /* 詞條高亮 */
+  .hl { color: #FCD34D; font-weight: 700; }
+  .hl-green { color: #34D399; font-weight: 700; }
+  .hl-blue { color: #93C5FD; font-weight: 700; }
+  .hl-purple { color: #C4B5FD; font-weight: 700; }
+
+  /* 說明框 */
+  .doc-note {
+    background: rgba(124,58,237,0.08);
+    border: 1px solid rgba(124,58,237,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 12px;
+    color: #94A3B8;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .doc-note strong { color: #A78BFA; }
+
+  /* 響應 */
+  @media (max-width: 600px) {
+    .mm-grid { grid-template-columns: 1fr 1fr; }
+    .flow-branch { gap: 16px; }
+    .flow-node { min-width: 90px; font-size: 11px; padding: 8px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">🟡 SCRATCH 程式組</div>
+  <h1>國中甲組<span>生活應用</span>備賽資料</h1>
+  <p>練習計畫 × 說明文件範例 × 評分攻略</p>
+  <div class="hero-meta">
+    <span>📅 比賽日 <strong>3/17（二）09:00</strong></span>
+    <span>👥 參賽隊伍 <strong>2隊共4人</strong></span>
+    <span>📄 說明文件 <strong>佔15分</strong></span>
+    <span>⚠️ 測試上傳 <strong>尚未完成</strong></span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showSection('plan')">📅 練習計畫</button>
+  <button class="nav-btn" onclick="showSection('score')">🎯 評分攻略</button>
+  <button class="nav-btn" onclick="showSection('doc1')">📄 範例一：健康飲食</button>
+  <button class="nav-btn" onclick="showSection('doc2')">📄 範例二：交通安全</button>
+</div>
+
+<!-- ══════════════ 練習計畫 ══════════════ -->
+<div id="plan" class="section active">
+<div class="container">
+
+  <div class="plan-intro">
+    <h2>🎯 程式組訓練策略</h2>
+    <p>
+      比賽題目在現場才公布，考驗的是「快速理解題目 → 拆解問題 → 設計程式 → 完成作品」的能力。
+      練習重點不是記住某個程式，而是訓練<strong style="color:#A78BFA">解題流程的肌肉記憶</strong>。
+      每次練習都要用相同步驟：先寫說明文件再開始寫程式。
+    </p>
+  </div>
+
+  <!-- 第一週 -->
+  <div class="week-title">
+    <span class="week-badge">第一週</span>
+    <h3>3/5（三）～ 3/9（日）　建立解題習慣</h3>
+  </div>
+
+  <!-- 3/5 -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-dot teacher">3/5</div>
+      <div class="day-info">
+        <div class="date">週三・老師在場</div>
+        <div class="subtitle">帳號測試 + 說明文件格式教學</div>
+      </div>
+      <span class="day-tag teacher-tag">✅ 師帶</span>
+      <span class="day-arrow">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="task-list">
+        <div class="task-item"><div class="task-num">1</div><span>登入競賽平台測試帳號：陳崇堯 <code style="font-family:monospace;font-size:11px;color:#A78BFA">y3qp93ud</code>｜李羽柔 <code style="font-family:monospace;font-size:11px;color:#A78BFA">3tgadzah</code></span></div>
+        <div class="task-item"><div class="task-num">2</div><span>完成測試上傳（上傳任意 Scratch 專案），確認成功截圖</span></div>
+        <div class="task-item"><div class="task-num">3</div><span>老師講解說明文件三個部分格式（對照附件一），發下本頁範例對照閱讀</span></div>
+        <div class="task-item"><div class="task-num">4</div><span>兩隊各自練習填寫「範例一：健康飲食」說明文件，老師從旁指導</span></div>
+      </div>
+      <div class="doc-remind">⏰ 今天<strong>必須完成測試上傳</strong>，否則比賽當天出問題責任自負！</div>
+    </div>
+  </div>
+
+  <!-- 3/6 -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-dot teacher">3/6</div>
+      <div class="day-info">
+        <div class="date">週四・老師在場</div>
+        <div class="subtitle">第一次完整模擬：垃圾分類生活應用</div>
+      </div>
+      <span class="day-tag teacher-tag">✅ 師帶</span>
+      <span class="day-arrow">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="task-list">
+        <div class="task-item"><div class="task-num">1</div><span>老師出題：「設計一個垃圾分類小測驗」（生活應用題型）</span></div>
+        <div class="task-item"><div class="task-num">2</div><span>兩隊各自先花 <strong>5分鐘</strong> 寫說明文件（問題需求+角色設計+流程圖草稿）</span></div>
+        <div class="task-item"><div class="task-num">3</div><span>剩下 <strong>15分鐘</strong> 開始寫 Scratch 程式</span></div>
+        <div class="task-item"><div class="task-num">4</div><span>老師觀察：兩人分工是否清楚？誰負責程式、誰負責素材？</span></div>
+      </div>
+      <div class="doc-remind">💡 <strong>說明文件要先寫再寫程式</strong>，這是今天最重要的習慣訓練！</div>
+    </div>
+  </div>
+
+  <!-- 3/7 -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-dot self">3/7</div>
+      <div class="day-info">
+        <div class="date">週五・自主練習</div>
+        <div class="subtitle">完成昨天的垃圾分類程式 + 補說明文件</div>
+      </div>
+      <span class="day-tag self-tag">自主</span>
+      <span class="day-arrow">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="task-list">
+        <div class="task-item"><div class="task-num">1</div><span>把昨天沒做完的垃圾分類程式補齊（有開始畫面、主程式、結束/結果畫面）</span></div>
+        <div class="task-item"><div class="task-num">2</div><span>補寫說明文件的角色清單與流程圖（可以手繪拍照或用紙）</span></div>
+        <div class="task-item"><div class="task-num">3</div><span>自我檢查：有沒有 BUG？有沒有介面提示讓使用者知道怎麼操作？</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第二週 -->
+  <div class="week-title">
+    <span class="week-badge">第二週</span>
+    <h3>3/10（一）～ 3/16（日）　實戰模擬衝刺</h3>
+  </div>
+
+  <!-- 3/10 -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-dot self">3/10</div>
+      <div class="day-info">
+        <div class="date">週一・自主練習</div>
+        <div class="subtitle">新題目：路口交通燈模擬</div>
+      </div>
+      <span class="day-tag self-tag">自主</span>
+      <span class="day-arrow">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="task-list">
+        <div class="task-item"><div class="task-num">1</div><span>題目：「模擬十字路口的交通燈，行人與車輛各自等待的邏輯」</span></div>
+        <div class="task-item"><div class="task-num">2</div><span>先寫說明文件（5分鐘），再開始寫程式（15分鐘）</span></div>
+        <div class="task-item"><div class="task-num">3</div><span>練習使用廣播訊息（broadcast）控制場景切換</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3/11 -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-dot teacher">3/11</div>
+      <div class="day-info">
+        <div class="date">週二・老師在場</div>
+        <div class="subtitle">互相觀摩 + 老師給回饋</div>
+      </div>
+      <span class="day-tag teacher-tag">✅ 師帶</span>
+      <span class="day-arrow">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="task-list">
+        <div class="task-item"><div class="task-num">1</div><span>兩隊互相展示上週完成的作品，互相提一個改善建議</span></div>
+        <div class="task-item"><div class="task-num">2</div><span>老師重點回饋：說明文件寫法、程式結構、角色分工</span></div>
+        <div class="task-item"><div class="task-num">3</div><span>討論比賽當天的分工策略：誰主寫程式、誰畫素材、誰寫說明文件</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3/12 -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-dot teacher">3/12</div>
+      <div class="day-info">
+        <div class="date">週三・老師在場</div>
+        <div class="subtitle">完整模擬實戰（限時20分鐘）</div>
+      </div>
+      <span class="day-tag teacher-tag">✅ 師帶</span>
+      <span class="day-arrow">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="task-list">
+        <div class="task-item"><div class="task-num">1</div><span>老師出新題目（不事先告知），宣布後立刻開始計時 20 分鐘</span></div>
+        <div class="task-item"><div class="task-num">2</div><span>學生完全模擬比賽：先寫說明文件 → 再寫程式 → 最後確認上傳</span></div>
+        <div class="task-item"><div class="task-num">3</div><span>時間到，老師用評分標準逐一檢視兩隊作品</span></div>
+      </div>
+      <div class="doc-remind">🔥 <strong>最重要的一次練習</strong>，當作真的比賽在跑！</div>
+    </div>
+  </div>
+
+  <!-- 3/13 -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-dot teacher">3/13</div>
+      <div class="day-info">
+        <div class="date">週四・老師在場</div>
+        <div class="subtitle">針對模擬弱點補強</div>
+      </div>
+      <span class="day-tag teacher-tag">✅ 師帶</span>
+      <span class="day-arrow">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="task-list">
+        <div class="task-item"><div class="task-num">1</div><span>根據昨天模擬的問題，今天重點練最弱的地方（說明文件？分工？特定積木？）</span></div>
+        <div class="task-item"><div class="task-num">2</div><span>確認比賽當天的流程：登入 → 看題目 → 5分鐘說明文件 → 開始程式</span></div>
+        <div class="task-item"><div class="task-num">3</div><span>再次測試帳號登入，確認無問題</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3/14 -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-dot self">3/14</div>
+      <div class="day-info">
+        <div class="date">週五・自主練習</div>
+        <div class="subtitle">輕度維持 + 說明文件最終練習</div>
+      </div>
+      <span class="day-tag self-tag">自主</span>
+      <span class="day-arrow">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="task-list">
+        <div class="task-item"><div class="task-num">1</div><span>拿出任一之前做過的程式，重新完整填寫一次說明文件（練習速度）</span></div>
+        <div class="task-item"><div class="task-num">2</div><span>確認自己能在 5 分鐘內完成說明文件初稿</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3/16 -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-dot self">3/16</div>
+      <div class="day-info">
+        <div class="date">週日・比賽前一天</div>
+        <div class="subtitle">休息 + 確認帳號</div>
+      </div>
+      <span class="day-tag self-tag">準備日</span>
+      <span class="day-arrow">▼</span>
+    </div>
+    <div class="day-body">
+      <div class="task-list">
+        <div class="task-item"><div class="task-num">1</div><span>最後一次登入 <code style="font-family:monospace;font-size:11px;color:#A78BFA">game.tc.edu.tw</code> 確認帳號密碼正常</span></div>
+        <div class="task-item"><div class="task-num">2</div><span>準備好明天要帶的東西：耳機、麥克風（比賽規定自備）</span></div>
+        <div class="task-item"><div class="task-num">3</div><span>早點休息，保持好狀態！🎉</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════ 評分攻略 ══════════════ -->
+<div id="score" class="section">
+<div class="container">
+
+  <div class="score-grid">
+    <div class="score-card big">
+      <div class="pct">85%</div>
+      <div class="label">參賽作品分數</div>
+      <div class="tip">程式功能完整、有主題、有互動、符合題目</div>
+    </div>
+    <div class="score-card small">
+      <div class="pct">15%</div>
+      <div class="label">說明文件分數</div>
+      <div class="tip">很多人不練 → 等於白送分！三個部分都要填</div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h4>✅ 比賽當天自我檢查清單</h4>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>說明文件：問題需求（文字/圖表/心智圖）已填寫</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>說明文件：角色(Sprite)、變數、清單、廣播 已列出</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>說明文件：流程圖或虛擬碼 已完成</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>作品：有開始畫面（操作說明）</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>作品：有主程式（符合題目需求）</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>作品：有結束畫面或結果回饋</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>作品：已加入創用CC授權圖示</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>作品：沒有出現姓名或學校資訊</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>作品：無明顯BUG，可正常執行</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>素材全部來自：Scratch內建 / 自己畫 / 自己錄音</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <span>已成功上傳至競賽平台（截圖確認）</span>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════ 範例一：健康飲食 ══════════════ -->
+<div id="doc1" class="section">
+<div class="container">
+
+  <div class="doc-note">
+    📌 這是<strong>範例說明文件</strong>，對應附件一「國中生活應用組」三個欄位的填法。
+    比賽時題目當場公布，你們要在 <strong>5分鐘內</strong> 完成類似這份說明文件的初稿，再開始寫程式。
+  </div>
+
+  <div class="mindmap">
+    <div class="mindmap-title">
+      <div class="topic-label">範例一・程式說明文件</div>
+      <div class="topic">🥗 健康飲食小測驗</div>
+    </div>
+
+    <!-- 第一部分 -->
+    <div class="mm-section s1">
+      <div class="mm-section-header">
+        <div class="sec-icon">📋</div>
+        <span>一、問題需求：這個任務要解決的問題是什麼？</span>
+      </div>
+      <div class="mm-section-body">
+        <div style="overflow-x:auto;">
+        <svg id="mindmap1" viewBox="0 0 780 340" width="100%" style="min-width:520px;display:block;margin:8px auto 0;">
+          <defs>
+            <marker id="arr1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#4B5563"/>
+            </marker>
+          </defs>
+          <!-- 連線 -->
+          <!-- 中心→背景與問題 -->
+          <line x1="390" y1="170" x2="190" y2="80" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/>
+          <!-- 中心→解決方式 -->
+          <line x1="390" y1="170" x2="190" y2="260" stroke="#10B981" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/>
+          <!-- 中心→使用者體驗 -->
+          <line x1="390" y1="170" x2="590" y2="80" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/>
+          <!-- 中心→成功標準 -->
+          <line x1="390" y1="170" x2="590" y2="260" stroke="#A78BFA" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/>
+
+          <!-- 葉節點連線 (背景與問題) -->
+          <line x1="190" y1="80" x2="48" y2="36" stroke="#3B82F6" stroke-width="1.5" opacity="0.35"/>
+          <line x1="190" y1="80" x2="48" y2="80" stroke="#3B82F6" stroke-width="1.5" opacity="0.35"/>
+          <line x1="190" y1="80" x2="48" y2="124" stroke="#3B82F6" stroke-width="1.5" opacity="0.35"/>
+          <!-- 葉節點連線 (解決方式) -->
+          <line x1="190" y1="260" x2="48" y2="218" stroke="#10B981" stroke-width="1.5" opacity="0.35"/>
+          <line x1="190" y1="260" x2="48" y2="260" stroke="#10B981" stroke-width="1.5" opacity="0.35"/>
+          <line x1="190" y1="260" x2="48" y2="302" stroke="#10B981" stroke-width="1.5" opacity="0.35"/>
+          <!-- 葉節點連線 (使用者體驗) -->
+          <line x1="590" y1="80" x2="732" y2="36" stroke="#F59E0B" stroke-width="1.5" opacity="0.35"/>
+          <line x1="590" y1="80" x2="732" y2="80" stroke="#F59E0B" stroke-width="1.5" opacity="0.35"/>
+          <line x1="590" y1="80" x2="732" y2="124" stroke="#F59E0B" stroke-width="1.5" opacity="0.35"/>
+          <!-- 葉節點連線 (成功標準) -->
+          <line x1="590" y1="260" x2="732" y2="218" stroke="#A78BFA" stroke-width="1.5" opacity="0.35"/>
+          <line x1="590" y1="260" x2="732" y2="260" stroke="#A78BFA" stroke-width="1.5" opacity="0.35"/>
+          <line x1="590" y1="260" x2="732" y2="302" stroke="#A78BFA" stroke-width="1.5" opacity="0.35"/>
+
+          <!-- 中心節點 -->
+          <ellipse cx="390" cy="170" rx="78" ry="34" fill="#7C3AED" opacity="0.9"/>
+          <ellipse cx="390" cy="170" rx="78" ry="34" fill="none" stroke="#A78BFA" stroke-width="1.5"/>
+          <text x="390" y="165" text-anchor="middle" fill="white" font-size="13" font-weight="800" font-family="Noto Sans TC,sans-serif">🥗 健康飲食</text>
+          <text x="390" y="181" text-anchor="middle" fill="#C4B5FD" font-size="10" font-family="Noto Sans TC,sans-serif">小測驗</text>
+
+          <!-- 分支節點：背景與問題 (左上) -->
+          <rect x="120" y="56" width="140" height="48" rx="10" fill="rgba(59,130,246,0.18)" stroke="#3B82F6" stroke-width="1.5"/>
+          <text x="190" y="75" text-anchor="middle" fill="#93C5FD" font-size="11" font-weight="700" font-family="Noto Sans TC,sans-serif">🎯 背景與問題</text>
+          <text x="190" y="93" text-anchor="middle" fill="#60A5FA" font-size="9" font-family="Noto Sans TC,sans-serif">為什麼要做這個？</text>
+
+          <!-- 分支節點：解決方式 (左下) -->
+          <rect x="120" y="236" width="140" height="48" rx="10" fill="rgba(16,185,129,0.18)" stroke="#10B981" stroke-width="1.5"/>
+          <text x="190" y="255" text-anchor="middle" fill="#6EE7B7" font-size="11" font-weight="700" font-family="Noto Sans TC,sans-serif">💡 解決方式</text>
+          <text x="190" y="273" text-anchor="middle" fill="#34D399" font-size="9" font-family="Noto Sans TC,sans-serif">怎麼做？</text>
+
+          <!-- 分支節點：使用者體驗 (右上) -->
+          <rect x="520" y="56" width="140" height="48" rx="10" fill="rgba(245,158,11,0.18)" stroke="#F59E0B" stroke-width="1.5"/>
+          <text x="590" y="75" text-anchor="middle" fill="#FCD34D" font-size="11" font-weight="700" font-family="Noto Sans TC,sans-serif">🖥️ 畫面規劃</text>
+          <text x="590" y="93" text-anchor="middle" fill="#FDE68A" font-size="9" font-family="Noto Sans TC,sans-serif">使用者看到什麼？</text>
+
+          <!-- 分支節點：成功標準 (右下) -->
+          <rect x="520" y="236" width="140" height="48" rx="10" fill="rgba(167,139,250,0.18)" stroke="#A78BFA" stroke-width="1.5"/>
+          <text x="590" y="255" text-anchor="middle" fill="#C4B5FD" font-size="11" font-weight="700" font-family="Noto Sans TC,sans-serif">📏 成功標準</text>
+          <text x="590" y="273" text-anchor="middle" fill="#DDD6FE" font-size="9" font-family="Noto Sans TC,sans-serif">做到什麼算完成？</text>
+
+          <!-- 葉節點：背景與問題 -->
+          <rect x="2" y="22" width="140" height="22" rx="6" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+          <text x="72" y="36" text-anchor="middle" fill="#93C5FD" font-size="10" font-family="Noto Sans TC,sans-serif">現代人飲食不均衡</text>
+          <rect x="2" y="67" width="140" height="22" rx="6" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+          <text x="72" y="81" text-anchor="middle" fill="#93C5FD" font-size="10" font-family="Noto Sans TC,sans-serif">學生不懂什麼食物健康</text>
+          <rect x="2" y="112" width="140" height="22" rx="6" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+          <text x="72" y="126" text-anchor="middle" fill="#93C5FD" font-size="10" font-family="Noto Sans TC,sans-serif">需要互動工具幫助學習</text>
+
+          <!-- 葉節點：解決方式 -->
+          <rect x="2" y="207" width="140" height="22" rx="6" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+          <text x="72" y="221" text-anchor="middle" fill="#6EE7B7" font-size="10" font-family="Noto Sans TC,sans-serif">做選擇題測驗</text>
+          <rect x="2" y="249" width="140" height="22" rx="6" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+          <text x="72" y="263" text-anchor="middle" fill="#6EE7B7" font-size="10" font-family="Noto Sans TC,sans-serif">點擊後立即回饋對錯</text>
+          <rect x="2" y="291" width="140" height="22" rx="6" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+          <text x="72" y="305" text-anchor="middle" fill="#6EE7B7" font-size="10" font-family="Noto Sans TC,sans-serif">最後顯示得分建議</text>
+
+          <!-- 葉節點：畫面規劃 -->
+          <rect x="638" y="22" width="140" height="22" rx="6" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+          <text x="708" y="36" text-anchor="middle" fill="#FCD34D" font-size="10" font-family="Noto Sans TC,sans-serif">開始畫面：說明規則</text>
+          <rect x="638" y="67" width="140" height="22" rx="6" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+          <text x="708" y="81" text-anchor="middle" fill="#FCD34D" font-size="10" font-family="Noto Sans TC,sans-serif">測驗畫面：5道題</text>
+          <rect x="638" y="112" width="140" height="22" rx="6" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+          <text x="708" y="126" text-anchor="middle" fill="#FCD34D" font-size="10" font-family="Noto Sans TC,sans-serif">結果畫面：分數+建議</text>
+
+          <!-- 葉節點：成功標準 -->
+          <rect x="638" y="207" width="140" height="22" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+          <text x="708" y="221" text-anchor="middle" fill="#C4B5FD" font-size="10" font-family="Noto Sans TC,sans-serif">能正確計分</text>
+          <rect x="638" y="249" width="140" height="22" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+          <text x="708" y="263" text-anchor="middle" fill="#C4B5FD" font-size="10" font-family="Noto Sans TC,sans-serif">答錯有提示說明</text>
+          <rect x="638" y="291" width="140" height="22" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+          <text x="708" y="305" text-anchor="middle" fill="#C4B5FD" font-size="10" font-family="Noto Sans TC,sans-serif">可以重新玩</text>
+        </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二部分 -->
+    <div class="mm-section s2" style="margin-top:12px">
+      <div class="mm-section-header">
+        <div class="sec-icon">🎮</div>
+        <span>二、角色(Sprite)、變數、串列、自訂積木、廣播</span>
+      </div>
+      <div class="mm-section-body">
+        <div class="mm-grid">
+          <div class="mm-node">
+            <div class="node-title">🧑 角色 (Sprite)</div>
+            <ul class="node-items">
+              <li><span class="hl-blue">背景板</span>：顯示題目文字</li>
+              <li><span class="hl-blue">選項A</span>：點擊觸發判斷</li>
+              <li><span class="hl-blue">選項B</span>：點擊觸發判斷</li>
+              <li><span class="hl-blue">選項C</span>：點擊觸發判斷</li>
+              <li><span class="hl-blue">回饋角色</span>：顯示對錯</li>
+              <li><span class="hl-blue">結果角色</span>：最終分數</li>
+            </ul>
+          </div>
+          <div class="mm-node">
+            <div class="node-title">📊 變數</div>
+            <ul class="node-items">
+              <li><span class="hl">分數</span>：答對+1</li>
+              <li><span class="hl">題目編號</span>：第幾題</li>
+              <li><span class="hl">正確答案</span>：A/B/C</li>
+              <li><span class="hl">總題數</span>：固定為5</li>
+            </ul>
+          </div>
+          <div class="mm-node">
+            <div class="node-title">📋 串列(list)</div>
+            <ul class="node-items">
+              <li><span class="hl-green">題目清單</span>：5道題目文字</li>
+              <li><span class="hl-green">答案清單</span>：5個正確選項</li>
+              <li><span class="hl-green">選項A清單</span>：每題A選項</li>
+              <li><span class="hl-green">選項B清單</span>：每題B選項</li>
+            </ul>
+          </div>
+          <div class="mm-node">
+            <div class="node-title">📡 廣播(程式流程)</div>
+            <ul class="node-items">
+              <li><span class="hl-purple">開始測驗</span>→顯示第一題</li>
+              <li><span class="hl-purple">下一題</span>→換下一道</li>
+              <li><span class="hl-purple">答對了</span>→顯示正確</li>
+              <li><span class="hl-purple">答錯了</span>→顯示錯誤</li>
+              <li><span class="hl-purple">顯示結果</span>→結束畫面</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第三部分：流程圖 -->
+    <div class="mm-section s3" style="margin-top:12px">
+      <div class="mm-section-header">
+        <div class="sec-icon">🔄</div>
+        <span>三、流程圖：解決方法與過程</span>
+      </div>
+      <div class="mm-section-body">
+        <div class="flow">
+          <div class="flow-node start-end">🟢 開始</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node process">初始化變數<br>分數=0，題號=1</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node process">顯示開始畫面<br>（操作說明）</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node process">按下「開始」→廣播「開始測驗」</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node process">根據題號從清單取出<br>題目文字 + 三個選項</div>
+          <div class="flow-arrow">↓ 等待玩家點擊選項</div>
+          <div class="flow-node" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#FCD34D;border-radius:8px;padding:10px 18px;">選項 = 正確答案？</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-branch">
+            <div class="flow-branch-item">
+              <div class="flow-branch-label">✅ 是</div>
+              <div class="flow-node process" style="border-color:rgba(16,185,129,0.4);color:#6EE7B7">分數 +1<br>廣播「答對了」</div>
+            </div>
+            <div class="flow-branch-item">
+              <div class="flow-branch-label">❌ 否</div>
+              <div class="flow-node process" style="border-color:rgba(239,68,68,0.4);color:#FCA5A5">顯示提示<br>廣播「答錯了」</div>
+            </div>
+          </div>
+          <div class="flow-arrow">↓ 題號 +1</div>
+          <div class="flow-node" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#FCD34D;border-radius:8px;padding:10px 18px;">題號 > 5？</div>
+          <div class="flow-branch">
+            <div class="flow-branch-item">
+              <div class="flow-branch-label">✅ 是</div>
+              <div class="flow-node process">廣播「顯示結果」<br>秀出分數</div>
+            </div>
+            <div class="flow-branch-item">
+              <div class="flow-branch-label">❌ 否</div>
+              <div class="flow-node process">廣播「下一題」<br>回到顯示題目</div>
+            </div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node start-end">🔴 結束 / 重玩</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /mindmap -->
+</div>
+</div>
+
+<!-- ══════════════ 範例二：交通安全 ══════════════ -->
+<div id="doc2" class="section">
+<div class="container">
+
+  <div class="doc-note">
+    📌 這是<strong>第二份範例說明文件</strong>，主題是「交通安全模擬」，展示另一種生活應用題型的寫法。
+    注意流程圖的結構與第一份不同，這個使用<strong>計時器</strong>和<strong>分身</strong>技巧。
+  </div>
+
+  <div class="mindmap">
+    <div class="mindmap-title">
+      <div class="topic-label">範例二・程式說明文件</div>
+      <div class="topic">🚦 路口交通安全模擬</div>
+    </div>
+
+    <!-- 第一部分 -->
+    <div class="mm-section s1">
+      <div class="mm-section-header">
+        <div class="sec-icon">📋</div>
+        <span>一、問題需求：這個任務要解決的問題是什麼？</span>
+      </div>
+      <div class="mm-section-body">
+        <div style="overflow-x:auto;">
+        <svg viewBox="0 0 780 340" width="100%" style="min-width:520px;display:block;margin:8px auto 0;">
+          <!-- 連線 -->
+          <line x1="390" y1="170" x2="190" y2="80" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/>
+          <line x1="390" y1="170" x2="190" y2="260" stroke="#10B981" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/>
+          <line x1="390" y1="170" x2="590" y2="80" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/>
+          <line x1="390" y1="170" x2="590" y2="260" stroke="#A78BFA" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/>
+
+          <!-- 葉節點連線 -->
+          <line x1="190" y1="80" x2="48" y2="36" stroke="#3B82F6" stroke-width="1.5" opacity="0.35"/>
+          <line x1="190" y1="80" x2="48" y2="80" stroke="#3B82F6" stroke-width="1.5" opacity="0.35"/>
+          <line x1="190" y1="80" x2="48" y2="124" stroke="#3B82F6" stroke-width="1.5" opacity="0.35"/>
+          <line x1="190" y1="260" x2="48" y2="218" stroke="#10B981" stroke-width="1.5" opacity="0.35"/>
+          <line x1="190" y1="260" x2="48" y2="260" stroke="#10B981" stroke-width="1.5" opacity="0.35"/>
+          <line x1="190" y1="260" x2="48" y2="302" stroke="#10B981" stroke-width="1.5" opacity="0.35"/>
+          <line x1="590" y1="80" x2="732" y2="36" stroke="#F59E0B" stroke-width="1.5" opacity="0.35"/>
+          <line x1="590" y1="80" x2="732" y2="80" stroke="#F59E0B" stroke-width="1.5" opacity="0.35"/>
+          <line x1="590" y1="80" x2="732" y2="124" stroke="#F59E0B" stroke-width="1.5" opacity="0.35"/>
+          <line x1="590" y1="260" x2="732" y2="218" stroke="#A78BFA" stroke-width="1.5" opacity="0.35"/>
+          <line x1="590" y1="260" x2="732" y2="260" stroke="#A78BFA" stroke-width="1.5" opacity="0.35"/>
+          <line x1="590" y1="260" x2="732" y2="302" stroke="#A78BFA" stroke-width="1.5" opacity="0.35"/>
+
+          <!-- 中心節點 -->
+          <ellipse cx="390" cy="170" rx="78" ry="34" fill="#7C3AED" opacity="0.9"/>
+          <ellipse cx="390" cy="170" rx="78" ry="34" fill="none" stroke="#A78BFA" stroke-width="1.5"/>
+          <text x="390" y="165" text-anchor="middle" fill="white" font-size="13" font-weight="800" font-family="Noto Sans TC,sans-serif">🚦 路口交通</text>
+          <text x="390" y="181" text-anchor="middle" fill="#C4B5FD" font-size="10" font-family="Noto Sans TC,sans-serif">安全模擬</text>
+
+          <!-- 分支節點 -->
+          <rect x="120" y="56" width="140" height="48" rx="10" fill="rgba(59,130,246,0.18)" stroke="#3B82F6" stroke-width="1.5"/>
+          <text x="190" y="75" text-anchor="middle" fill="#93C5FD" font-size="11" font-weight="700" font-family="Noto Sans TC,sans-serif">🎯 背景與問題</text>
+          <text x="190" y="93" text-anchor="middle" fill="#60A5FA" font-size="9" font-family="Noto Sans TC,sans-serif">為什麼要做這個？</text>
+
+          <rect x="120" y="236" width="140" height="48" rx="10" fill="rgba(16,185,129,0.18)" stroke="#10B981" stroke-width="1.5"/>
+          <text x="190" y="255" text-anchor="middle" fill="#6EE7B7" font-size="11" font-weight="700" font-family="Noto Sans TC,sans-serif">💡 解決方式</text>
+          <text x="190" y="273" text-anchor="middle" fill="#34D399" font-size="9" font-family="Noto Sans TC,sans-serif">怎麼做？</text>
+
+          <rect x="520" y="56" width="140" height="48" rx="10" fill="rgba(245,158,11,0.18)" stroke="#F59E0B" stroke-width="1.5"/>
+          <text x="590" y="75" text-anchor="middle" fill="#FCD34D" font-size="11" font-weight="700" font-family="Noto Sans TC,sans-serif">🖥️ 畫面規劃</text>
+          <text x="590" y="93" text-anchor="middle" fill="#FDE68A" font-size="9" font-family="Noto Sans TC,sans-serif">使用者看到什麼？</text>
+
+          <rect x="520" y="236" width="140" height="48" rx="10" fill="rgba(167,139,250,0.18)" stroke="#A78BFA" stroke-width="1.5"/>
+          <text x="590" y="255" text-anchor="middle" fill="#C4B5FD" font-size="11" font-weight="700" font-family="Noto Sans TC,sans-serif">📏 成功標準</text>
+          <text x="590" y="273" text-anchor="middle" fill="#DDD6FE" font-size="9" font-family="Noto Sans TC,sans-serif">做到什麼算完成？</text>
+
+          <!-- 葉節點：背景與問題 -->
+          <rect x="2" y="22" width="140" height="22" rx="6" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+          <text x="72" y="36" text-anchor="middle" fill="#93C5FD" font-size="10" font-family="Noto Sans TC,sans-serif">行人闖紅燈意外頻繁</text>
+          <rect x="2" y="67" width="140" height="22" rx="6" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+          <text x="72" y="81" text-anchor="middle" fill="#93C5FD" font-size="10" font-family="Noto Sans TC,sans-serif">學生不了解交通規則</text>
+          <rect x="2" y="112" width="140" height="22" rx="6" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+          <text x="72" y="126" text-anchor="middle" fill="#93C5FD" font-size="10" font-family="Noto Sans TC,sans-serif">需要模擬體驗後果</text>
+
+          <!-- 葉節點：解決方式 -->
+          <rect x="2" y="207" width="140" height="22" rx="6" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+          <text x="72" y="221" text-anchor="middle" fill="#6EE7B7" font-size="10" font-family="Noto Sans TC,sans-serif">模擬真實路口場景</text>
+          <rect x="2" y="249" width="140" height="22" rx="6" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+          <text x="72" y="263" text-anchor="middle" fill="#6EE7B7" font-size="10" font-family="Noto Sans TC,sans-serif">玩家控制行人過馬路</text>
+          <rect x="2" y="291" width="140" height="22" rx="6" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+          <text x="72" y="305" text-anchor="middle" fill="#6EE7B7" font-size="10" font-family="Noto Sans TC,sans-serif">違規→扣分+動畫提醒</text>
+
+          <!-- 葉節點：畫面規劃 -->
+          <rect x="638" y="22" width="140" height="22" rx="6" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+          <text x="708" y="36" text-anchor="middle" fill="#FCD34D" font-size="10" font-family="Noto Sans TC,sans-serif">開始畫面：說明規則</text>
+          <rect x="638" y="67" width="140" height="22" rx="6" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+          <text x="708" y="81" text-anchor="middle" fill="#FCD34D" font-size="10" font-family="Noto Sans TC,sans-serif">遊戲畫面：路口模擬</text>
+          <rect x="638" y="112" width="140" height="22" rx="6" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+          <text x="708" y="126" text-anchor="middle" fill="#FCD34D" font-size="10" font-family="Noto Sans TC,sans-serif">結束畫面：總結評語</text>
+
+          <!-- 葉節點：成功標準 -->
+          <rect x="638" y="207" width="140" height="22" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+          <text x="708" y="221" text-anchor="middle" fill="#C4B5FD" font-size="10" font-family="Noto Sans TC,sans-serif">行人有燈號正確反應</text>
+          <rect x="638" y="249" width="140" height="22" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+          <text x="708" y="263" text-anchor="middle" fill="#C4B5FD" font-size="10" font-family="Noto Sans TC,sans-serif">違規有即時回饋</text>
+          <rect x="638" y="291" width="140" height="22" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+          <text x="708" y="305" text-anchor="middle" fill="#C4B5FD" font-size="10" font-family="Noto Sans TC,sans-serif">30秒內安全過馬路</text>
+        </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二部分 -->
+    <div class="mm-section s2" style="margin-top:12px">
+      <div class="mm-section-header">
+        <div class="sec-icon">🎮</div>
+        <span>二、角色(Sprite)、變數、串列、自訂積木、廣播</span>
+      </div>
+      <div class="mm-section-body">
+        <div class="mm-grid">
+          <div class="mm-node">
+            <div class="node-title">🧑 角色 (Sprite)</div>
+            <ul class="node-items">
+              <li><span class="hl-blue">行人</span>：玩家控制（方向鍵）</li>
+              <li><span class="hl-blue">交通燈</span>：紅/綠切換造型</li>
+              <li><span class="hl-blue">汽車</span>：綠燈時從右往左移動</li>
+              <li><span class="hl-blue">斑馬線</span>：場景裝飾</li>
+              <li><span class="hl-blue">結果板</span>：顯示分數與評語</li>
+            </ul>
+          </div>
+          <div class="mm-node">
+            <div class="node-title">📊 變數</div>
+            <ul class="node-items">
+              <li><span class="hl">安全分數</span>：初始100分</li>
+              <li><span class="hl">燈號狀態</span>：0=紅，1=綠</li>
+              <li><span class="hl">倒數計時</span>：30秒</li>
+              <li><span class="hl">是否違規</span>：true/false</li>
+              <li><span class="hl">過馬路次數</span>：成功幾次</span></li>
+            </ul>
+          </div>
+          <div class="mm-node">
+            <div class="node-title">🔧 自訂積木(函數)</div>
+            <ul class="node-items">
+              <li><span class="hl-green">切換燈號</span>：紅↔綠輪替</li>
+              <li><span class="hl-green">判斷違規</span>：碰燈+紅燈→扣分</li>
+              <li><span class="hl-green">重置行人</span>：回到起點位置</li>
+            </ul>
+          </div>
+          <div class="mm-node">
+            <div class="node-title">📡 廣播(程式流程)</div>
+            <ul class="node-items">
+              <li><span class="hl-purple">遊戲開始</span>→倒數+燈號啟動</li>
+              <li><span class="hl-purple">違規發生</span>→扣分+提示</li>
+              <li><span class="hl-purple">成功過馬路</span>→+過馬路次數</li>
+              <li><span class="hl-purple">時間到</span>→顯示結果</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第三部分：流程圖 -->
+    <div class="mm-section s3" style="margin-top:12px">
+      <div class="mm-section-header">
+        <div class="sec-icon">🔄</div>
+        <span>三、流程圖：解決方法與過程</span>
+      </div>
+      <div class="mm-section-body">
+        <div class="flow">
+          <div class="flow-node start-end">🟢 開始</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node process">初始化：分數=100<br>計時=30，燈號=紅</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node process">顯示開始畫面<br>按空白鍵開始</div>
+          <div class="flow-arrow">↓ 廣播「遊戲開始」</div>
+          <div class="flow-row">
+            <div class="flow-node process" style="font-size:11px">【同時執行】<br>燈號每3秒切換<br>紅↔綠</div>
+            <div class="flow-node process" style="font-size:11px">【同時執行】<br>倒數計時器<br>每秒-1</div>
+            <div class="flow-node process" style="font-size:11px">【同時執行】<br>綠燈時汽車<br>從右往左移動</div>
+          </div>
+          <div class="flow-arrow">↓ 玩家按方向鍵移動行人</div>
+          <div class="flow-node" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#FCD34D;border-radius:8px;padding:10px 18px;">行人碰到馬路 且 燈號=紅？</div>
+          <div class="flow-branch">
+            <div class="flow-branch-item">
+              <div class="flow-branch-label">✅ 是（違規）</div>
+              <div class="flow-node process" style="border-color:rgba(239,68,68,0.4);color:#FCA5A5">廣播「違規發生」<br>分數-20，行人重置</div>
+            </div>
+            <div class="flow-branch-item">
+              <div class="flow-branch-label">❌ 否（安全）</div>
+              <div class="flow-node process" style="border-color:rgba(16,185,129,0.4);color:#6EE7B7">繼續移動</div>
+            </div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#FCD34D;border-radius:8px;padding:10px 18px;">行人到達對面？</div>
+          <div class="flow-branch">
+            <div class="flow-branch-item">
+              <div class="flow-branch-label">✅ 是</div>
+              <div class="flow-node process">過馬路次數+1<br>行人回起點</div>
+            </div>
+            <div class="flow-branch-item">
+              <div class="flow-branch-label">❌ 否</div>
+              <div class="flow-node process">繼續等待<br>玩家操作</div>
+            </div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#FCD34D;border-radius:8px;padding:10px 18px;">計時 = 0？</div>
+          <div class="flow-branch">
+            <div class="flow-branch-item">
+              <div class="flow-branch-label">✅ 是</div>
+              <div class="flow-node process">廣播「時間到」<br>顯示分數+評語</div>
+            </div>
+            <div class="flow-branch-item">
+              <div class="flow-branch-label">❌ 否</div>
+              <div class="flow-node process">繼續遊戲</div>
+            </div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node start-end">🔴 結束 / 重玩</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /mindmap -->
+</div>
+</div>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  function toggleDay(card) {
+    card.classList.toggle('open');
+  }
+
+  function toggleCheck(item) {
+    item.classList.toggle('checked');
+    if (item.classList.contains('checked')) {
+      item.querySelector('.check-box').textContent = '✓';
+    } else {
+      item.querySelector('.check-box').textContent = '';
+    }
+  }
+
+  // 預設打開第一天
+  document.querySelector('.day-card').classList.add('open');
+</script>
+</body>
+</html>
